@@ -1,0 +1,183 @@
+body{
+	/*background-image: url(../img/2.jpg);*/
+	/*background-image: url(../img/landscape_bg.png);
+	
+	background-position: center bottom;
+	background-size: 100% auto;
+	background-repeat: no-repeat;
+	height: 100%;
+	display: flex;*/
+	bottom: 0;
+	left: 0;
+	background-color: #e7f5f7;
+}
+/*nav{
+	padding-bottom: 8px;
+    background: #333333;
+}
+nav:after{
+	background: linear-gradient(-45deg, #e7f5f7 6px, transparent 0), linear-gradient(45deg, #e7f5f7 6px, transparent 0);
+    background-position: left-bottom;
+    background-repeat: repeat-x;
+    background-size: 12px 12px;
+    content: " ";
+    display: block;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 12px;
+}*/
+.left_panel_container{
+	padding-right: 0;
+}
+
+.tabs-content{
+	margin: 0 0 0 0;
+	height: 497px;
+}
+.tabs-content .content{
+	height: 497px;
+  	padding-bottom: 0;
+ 	padding-top: 10px;
+}
+
+.tab-title{
+	width: 50%;
+}
+.tabs .active  a{
+	background-color: #008CBA !important;
+	color: #FFFFFF !important;
+}
+.tab-title > a {
+	padding: 10px 15px 10px 15px !important;
+	font-size: 16px !important;
+	background-color: #ffffff !important;
+	border: solid 1px #008CBA !important;
+	color: #008CBA !important;
+}
+.sub-nav{
+	margin-bottom: 10px;
+}
+/*.sub-nav .active a{
+	background: #43AC6A !important;
+	border-color: #368a55 !important;
+	color: #FFFFFF;
+}
+.sub-nav .active a:hover{
+	background-color: #368a55;
+}*/
+.list_container{
+	overflow-x: hidden; 
+	overflow-y : scroll;
+	height: 487px; 
+}
+.list_container hr{
+	margin: 8px 0 8px 0 !important;
+	border: solid #BEBEBE;
+	border-width: 1px 0 0;
+}
+
+.list_item:hover{
+	cursor: pointer;
+	background-color: #e7e7e7;
+}
+.list_item .small-3{
+	padding-right: 0;
+}
+.list_item .small-9 h6{
+	margin-top: 5px;
+}
+.list_item .small-9{
+	padding-left: 5px;
+}
+.list_item .small-12 h6{
+	margin-bottom: 0;
+}
+.list_item .small-12 h6 a:hover{
+	text-decoration: underline;
+}
+.list_item h6{
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden; 
+	text-overflow: ellipsis;
+}
+.main-section{
+	padding-bottom: 50px;
+	background-image: url("../img/landscape_bg.png");
+	background-position: center bottom;
+	background-size: 100% auto;
+	background-repeat: no-repeat;
+}
+.main-section > .panel{
+	margin-top: 10px;
+	padding: 15px 0px 15px 0px;
+	border: solid 1px #A08A8E;
+}
+footer, .footer{
+	background-color: #333333;
+	/*background-color: #5d4c4f;*/
+	font-family: Helvetica;
+}
+footer h5{
+	color: white;
+	margin-top: 8px;
+	margin-bottom: 3px;
+}
+footer ul li a, .contacts li{
+	color: grey;
+	text-decoration: none;
+	line-height: inherit;
+	font-size: 0.85rem;
+}
+footer .social li .fa{
+  font-size: 30px;
+  width: 35px;
+  text-align: center;
+  margin: 0px 0 5px 0;
+}
+footer ul li a:hover, footer ul li a:active{
+	color:white;
+	text-decoration: none;
+	line-height: inherit;
+}
+#ymap{
+	width: 100%; 
+	/*height: 70vh;*/
+	height: 580px; /*height of the left form*/
+	border: #BABABA solid 1px;
+}
+h5 .start{
+	color: rgb(80, 211, 58);
+}
+h5 .finish{
+	color: rgb(237, 69, 67);
+}
+
+.frequency .columns, .frequencyArea .columns{
+	margin-bottom: 10px;
+}
+#submit_pick_request{
+	margin-bottom: 0px;
+}
+.isRegularLabel{
+	margin-right: 15px;
+}
+.weekdayChoice .button{
+	padding-left: 10px;
+	padding-right: 10px;
+}
+.deletePlacemark{
+	color: red;
+}
+.deletePlacemark:hover{
+	color: red;
+	text-decoration: underline;
+}
+.placemark_row{
+	font-size: 13px;
+}
+.placemark_row .balloonDeleteButton{
+	color: red;
+}

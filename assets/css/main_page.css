@@ -1,0 +1,78 @@
+body{
+	/*background-image: url(../img/header_bg.png);
+	background-position: 0% 100%;
+	background-size: 100% auto;
+	background-repeat: no-repeat;*/
+}
+@font-face {
+    font-family: HelvNeue; /* Гарнитура шрифта */
+    src: url(../fonts/HelveticaNeueCyr-UltraLight.otf); /* Для IE5-8 */
+    src: local(HelvNeue), url(../fonts/HelveticaNeueCyr-UltraLight.otf); /* Для остальных браузеров */
+   }
+
+header {
+	/*background-color: #C8E0E3;
+	padding-top: 10px;*/
+	/*background-image: url(../img/traffic_bg.jpg);*/
+	background-image: url(../img/driving_bg.jpg);
+	background-color: #060b0e;
+	background-position: center top;
+	background-size: 100% auto;
+	background-repeat: no-repeat;
+	min-height: 90%;
+	display: flex;
+	top: 0;
+	left: 0;
+}
+.category_label{
+	padding-top: 70%;
+	color:white;
+	font-family:HelvNeue;
+}
+.category_button{
+	font-family:HelvNeue;
+	letter-spacing: normal;
+	background-color: #323E6E;
+	/* border-color: #007095; */
+	color: #FFFFFF;
+	transition: background-color 300ms ease-out;
+	letter-spacing: 1px;
+}
+/*
+.road{
+	background: url(../img/road_only.png) repeat-x;
+	height: 18px;
+	background-position: center; 
+    background-size:100% 100%;
+    background-repeat: no-repeat;
+    width:100%;
+}*/
+.chevron::before {
+	border-style: solid;
+	border-width: 0.2em 0.2em 0 0;
+	content: '';
+	display: inline-block;
+	height: 2.45em;
+	left: 47%;
+	position: relative;
+	top: 0.15em;
+	transform: rotate(-45deg);
+	vertical-align: top;
+	width: 2.45em;
+	color: #fff;
+}
+
+.chevron.right:before {
+	left: 0;
+	transform: rotate(45deg);
+}
+
+.chevron.bottom:before {
+	top: 0;
+	transform: rotate(135deg);
+}
+
+.chevron.left:before {
+	left: 0.25em;
+	transform: rotate(-135deg);
+}
