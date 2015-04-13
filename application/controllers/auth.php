@@ -7,7 +7,7 @@ class Auth extends CI_Controller {
 	public function index() {
 		$client_id = '4871758';
 		$client_secret = '2pMyltGbp4gdczcKt36f';
-		$redirect_uri = 'http://localhost:8888/Poputka';
+		$redirect_uri = 'http://localhost/Poputka';
 		
 		$url = 'http://oauth.vk.com/authorize';
 		

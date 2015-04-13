@@ -13,7 +13,7 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 					'client_id' => '4871758',
 					'client_secret' => '2pMyltGbp4gdczcKt36f',
 					'code' => $_GET['code'],
-					'redirect_uri' => 'http://localhost:8888/Poputka'
+					'redirect_uri' => 'http://localhost/Poputka'
 				);
 
 				$token = json_decode(file_get_contents('https://oauth.vk.com/access_token' . '?' . urldecode(http_build_query($params))), true);
@@ -28,9 +28,6 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 				$userInfo = json_decode(file_get_contents('https://api.vk.com/method/users.get' . '?' . urldecode(http_build_query($params))), true);
 				if (isset($userInfo['response'][0]['uid'])) {
 					$userInfo = $userInfo['response'][0];
-					$result = true;
-				}
-				if($result){
 					$this->mdl_auth->auth($userInfo);
 				}
 			}

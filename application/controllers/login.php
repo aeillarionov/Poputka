@@ -15,7 +15,7 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 					'client_id' => '4871758',
 					'client_secret' => '2pMyltGbp4gdczcKt36f',
 					'code' => $_GET['code'],
-					'redirect_uri' => 'http://localhost:8888/Poputka/login'
+					'redirect_uri' => 'http://localhost/Poputka/login'
 				);
 
 				$token = json_decode(file_get_contents('https://oauth.vk.com/access_token' . '?' . urldecode(http_build_query($params))), true);
