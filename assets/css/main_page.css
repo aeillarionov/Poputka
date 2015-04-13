@@ -24,6 +24,14 @@ header {
 	top: 0;
 	left: 0;
 }
+
+.user_photo{
+	width: 44px;
+	height: 44px;
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
+	margin: 0 2px 2px 0;
+}
 .category_label{
 	padding-top: 70%;
 	color:white;

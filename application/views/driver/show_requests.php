@@ -48,7 +48,7 @@
             <ul class="dropdown">
               <li><a href="#">Профиль</a></li>
               <li class=""><a href="#">Настройки</a></li>
-              <li><a href="../auth/logout">Выйти</a></li>
+              <li><a href="../../auth/logout">Выйти</a></li>
             </ul>
           </li>
           <li class="divider"></li>

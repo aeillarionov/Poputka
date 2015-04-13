@@ -29,19 +29,42 @@
         </li>
     </ul>
 <?php if(isset($_SESSION['user_id'])){?>
-	<section class="top-bar-section right">
-		<span style="color:white;"><?php echo $_SESSION['name'].' '.$_SESSION['surename']?></span><img style="width:70px; height: 70px;" src="<?php echo $_SESSION['pic_url'];?>">
+  
+	<section class="top-bar-section">
+    
+    <ul class="right title-area">
+      <li class="divider"></li>
+      <li class="has-dropdown not-click name">
+        <a href="#" style="height:100%">
+          <img style="height:80%; width:auto;" class="user_photo" src="<?php echo $_SESSION['pic_url'];?>">
+        
+            <?php echo $_SESSION['name'].' '.$_SESSION['surename']?>
+        </a>
+        <ul class="dropdown"><li class="title back js-generated"><h5><a href="javascript:void(0)">Back</a></h5></li><li class="parent-link hide-for-large-up"><a class="parent-link js-generated" href="#">USERNAME</a></li>
+          <li><a href="#">Профиль</a></li>
+          <li class=""><a href="#">Настройки</a></li>
+          <li><a href="auth/logout">Выйти</a></li>
+        </ul>
+      </li>
+      <li class="divider"></li>
+      </ul>
+      
 	</section>
+
 <?php } else { ?>
     <section class="top-bar-section">
     <ul class="right">
         <li class="divider"></li>
-        <li class=""><a href="auth/index">Зарегистрироваться</a></li>
-        <li class="divider"></li>
-        <li class=""><a href="#">Войти</a></li>
+        <li class=""><a href="#" data-reveal-id="login_modal">Войти</a></li>
         <li class="divider"></li>
     </ul>
   </section>
+  <div id="login_modal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <h2 id="modalTitle">Привет! Заходи к нам</h2>
+    <!--p class="lead">Your couch.  It is mine.</p-->
+    <a class="button" href="<?php echo $login_vk_link;?>"> Войти через VK </a>
+    <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+  </div>
 <?php }?>
   </nav>
 
@@ -54,7 +77,7 @@
         </div>
         <div class="row ">
           <div class="small-12 columns text-center">
-            <a href="driver/show_requests" class="button category_button" style="background-color:#339656;"> Найти попутчика</a>
+            <a href="carpool/driver/show_requests" class="button category_button" style="background-color:#339656;"> Найти попутчика</a>
             <a href="#" class="button category_button" style="background-color:#339656;">Добавить поездку</a>
           </div>
         </div>
@@ -69,7 +92,7 @@
         <div class="row">
           <div class="small-12 columns text-center">
             <a href="#" class="button category_button">  Найти поездку </a>
-            <a href="passenger/pick_me" class="button category_button">  Подвези меня  </a>
+            <a href="carpool/passenger/pick_me" class="button category_button">  Подвези меня  </a>
           </div>
         </div>
 

@@ -32,7 +32,7 @@ function init(){
 
 	searchControl.options.set('noPlacemark',true);
 
-	searchControl.events.add('resultshow', function (e) {
+	/*searchControl.events.add('resultshow', function (e) {
 		var index = e.get('index');
 		searchControl.getResult(index).then(function (geoObject) {
 			//var contentHeader = geoObject.properties.get('balloonContentHeader');
@@ -58,6 +58,27 @@ function init(){
 			searchPlacemark.balloon.open();
 
 		}, this);
+	});*/
+
+	searchControl.events.add('resultselect', function (e) {
+		var results = searchControl.getResultsArray(),
+            selected = e.get('index'),
+            point = results[selected].geometry.getCoordinates();
+        //console.log(point);
+        $('#startPlacemarkValue').data('lat', point[0]).data('lon',point[1]);
+        $('#startPlacemarkValue').val(results[selected].properties.get('name'));
+        
+        removeStartPlacemark();
+		startPlacemark = createStartPlacemark(point);
+		YMap.geoObjects.add(startPlacemark);
+		createPolyline(startPlacemark, finishPlacemark);
+		// Слушаем событие окончания перетаскивания на метке.
+        startPlacemark.events.add('dragend', function () {
+            // При изменении положения меток меняем линию
+            createPolyline(startPlacemark, finishPlacemark);
+        });
+       
+        //console.log(results[selected].properties.get('name'));
 	});
 
 	// Слушаем клик на карте
@@ -229,7 +250,7 @@ var removeAllPlacemarks = function() {
 	removeFinishPlacemark();
 
 	//Перевод карты в полноэкранный режим
-	YMap.controls.get('fullscreenControl').select();
+	//YMap.controls.get('fullscreenControl').select();
 }
 // Удаление начальной метки
 function removeStartPlacemark() {
