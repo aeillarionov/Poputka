@@ -6,6 +6,7 @@
 		}
 		public function show_all(){
 			$i=0;
+			$this->db->order_by('request_id', 'desc');
 			$query = $this->db->get('requests');
 			$req_arr = $query->result_array();
 			
