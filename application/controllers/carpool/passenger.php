@@ -14,8 +14,8 @@ class Passenger extends CI_Controller {
 				'departure' => $_POST['departureCoord'],
 				'destination' => $_POST['destinationCoord'],
 				'owner_id' => $_SESSION['user_id'],
-				'from_time' => strtotime($_POST['startDate'].' '.$_POST['startTime'].':00'),
-				'to_time' => strtotime($_POST['startDate'].' '.$_POST['finishTime'].':00'),
+				'from_time' => strtotime(str_replace('/', '-', $_POST['startDate']).' '.$_POST['startTime']),
+				'to_time' => strtotime(str_replace('/', '-', $_POST['startDate']).' '.$_POST['finishTime']),
 				'regular' => $_POST['frequencySwitchGroup'] ? 1 : 0,
 				'passengers' => $_POST['male_quantity'] + $_POST['female_quantity'],
 				'extra' => $_POST['extra']

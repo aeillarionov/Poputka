@@ -78,7 +78,7 @@
         <div class="row ">
           <div class="small-12 columns text-center">
             <a href="carpool/driver/show_requests" class="button category_button" style="background-color:#339656;"> Найти попутчика</a>
-            <a href="#" class="button category_button" style="background-color:#339656;">Добавить поездку</a>
+            <a href="carpool/driver/add_route_page" class="button category_button" style="background-color:#339656;">Добавить поездку</a>
           </div>
         </div>
 

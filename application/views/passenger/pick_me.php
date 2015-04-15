@@ -28,7 +28,7 @@
   <nav class="top-bar" data-topbar role="navigation" data-options="is_hover: true">
     <ul class="title-area">
         <li class="name">
-             <a href="../" style="height:100%"> <img style="height:100%" src="http://placehold.it/150x70"> </a>
+             <a href="../../" style="height:100%"> <img style="height:100%" src="http://placehold.it/150x70"> </a>
         </li>
         <li class="toggle-topbar menu-icon"><a href="#"><span>Меню</span></a>
         </li>

@@ -28,7 +28,7 @@
   <nav class="top-bar" data-topbar role="navigation" data-options="is_hover: true">
     <ul class="title-area">
         <li class="name">
-             <a href="../" style="height:100%"> <img style="height:100%" src="http://placehold.it/150x70"> </a>
+             <a href="../../" style="height:100%"> <img style="height:100%" src="http://placehold.it/150x70"> </a>
         </li>
         <li class="toggle-topbar menu-icon"><a href="#"><span>Меню</span></a>
         </li>
@@ -107,12 +107,12 @@
               <div class="small-12 columns text-center">
                 <!-- Add or view tabs -->
                 <ul class="tabs" data-tab>
-                  <li class="tab-title active"><a href="#list_view">Попутчики</a></li>
-                  <li class="tab-title"><a href="#add_trip">Новая поездка</a></li>
+                  <li class="tab-title <?php if($mode==0) echo 'active';?>"><a href="#list_view">Попутчики</a></li>
+                  <li class="tab-title <?php if($mode==1) echo 'active';?>"><a href="#add_trip">Новая поездка</a></li>
                 </ul>
                 <div class="tabs-content">
                   <!-- List Tab -->
-                  <div class="content active" id="list_view">
+                  <div class="content <?php if($mode==0) echo 'active';?>" id="list_view">
                     <div class="row"> <div class="small-12 columns">
                       <dl class="sub-nav">
                         <!--dt>Фильтр:</dt-->
@@ -121,7 +121,8 @@
                         <dd><a href="#">Ближайшие</a></dd>
                       </dl>
                       <div class="list_container">
-<?php foreach($requests as $request):
+<?php
+foreach($requests as $request):
 $from_time_arr = getdate($request['from_time']);
 $mins = $from_time_arr['minutes']<10 ? '0'.$from_time_arr['minutes'] : $from_time_arr['minutes'];
 $time_str = $from_time_arr['hours'].':'.$mins.' - ';
@@ -149,194 +150,12 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
 
 	<hr>
 
-<?php endforeach?>
-                        <div class="row list_item">
-                          <!-- User photo -->
-                          <div class="small-3 columns" style="padding-right:0;">
-                            <img src="http://placehold.it/60x60&amp;text=[img]">
-                          </div>
-                          <!-- List item info -->
-                          <div class="small-9 columns">
-                            <h6> <i class="fa fa-flag-o"></i>&nbsp; Студеная улица </h6>
-                            <h6> <i class="fa fa-flag-checkered"></i>&nbsp; улица Максима Горького </h6>
-                            
-                          </div>
-                          <div class="small-12 columns">
-                            <h6> Сегодня &nbsp;<i class="fa fa-clock-o"></i> 23:00-23:30 &nbsp; | &nbsp; 
-                              <a href="#"> Подробнее </a>
-                            </h6>
-                          </div>
-                        </div>
-
-                        <hr>
-
-                        <div class="row list_item">
-                          <!-- User photo -->
-                          <div class="small-3 columns" style="padding-right:0;">
-                            <img src="http://placehold.it/60x60&amp;text=[img]">
-                          </div>
-                          <!-- List item info -->
-                          <div class="small-9 columns">
-                            <h6> <i class="fa fa-flag-o"></i>&nbsp; Студеная улица </h6>
-                            <h6> <i class="fa fa-flag-checkered"></i>&nbsp; улица Максима Горького </h6>
-                            
-                          </div>
-                          <div class="small-12 columns">
-                            <h6> Сегодня &nbsp;<i class="fa fa-clock-o"></i> 23:00-23:30 &nbsp; | &nbsp; 
-                              <a href="#"> Подробнее </a>
-                            </h6>
-                          </div>
-                        </div>
-
-                        <hr>
-
-                        <div class="row list_item">
-                          <!-- User photo -->
-                          <div class="small-3 columns" style="padding-right:0;">
-                            <img src="http://placehold.it/60x60&amp;text=[img]">
-                          </div>
-                          <!-- List item info -->
-                          <div class="small-9 columns">
-                            <h6> <i class="fa fa-flag-o"></i>&nbsp; Студеная улица </h6>
-                            <h6> <i class="fa fa-flag-checkered"></i>&nbsp; улица Максима Горького </h6>
-                            
-                          </div>
-                          <div class="small-12 columns">
-                            <h6> Сегодня &nbsp;<i class="fa fa-clock-o"></i> 23:00-23:30 &nbsp; | &nbsp; 
-                              <a href="#"> Подробнее </a>
-                            </h6>
-                          </div>
-                        </div>
-
-                        <hr>
-
-                        <div class="row list_item">
-                          <!-- User photo -->
-                          <div class="small-3 columns" style="padding-right:0;">
-                            <img src="http://placehold.it/60x60&amp;text=[img]">
-                          </div>
-                          <!-- List item info -->
-                          <div class="small-9 columns">
-                            <h6> <i class="fa fa-flag-o"></i>&nbsp; Студеная улица </h6>
-                            <h6> <i class="fa fa-flag-checkered"></i>&nbsp; улица Максима Горького </h6>
-                            
-                          </div>
-                          <div class="small-12 columns">
-                            <h6> Сегодня &nbsp;<i class="fa fa-clock-o"></i> 23:00-23:30 &nbsp; | &nbsp; 
-                              <a href="#"> Подробнее </a>
-                            </h6>
-                          </div>
-                        </div>
-
-                        <hr>
-
-                        <div class="row list_item">
-                          <!-- User photo -->
-                          <div class="small-3 columns" style="padding-right:0;">
-                            <img src="https://pp.vk.me/c5626/u9663698/a_f1064ebb.jpg">
-                          </div>
-                          <!-- List item info -->
-                          <div class="small-9 columns">
-                            <h6> <i class="fa fa-flag-o"></i>&nbsp; Студеная улица </h6>
-                            <h6> <i class="fa fa-flag-checkered"></i>&nbsp; улица Максима Горького </h6>
-                            
-                          </div>
-                          <div class="small-12 columns">
-                            <h6> Сегодня &nbsp;<i class="fa fa-clock-o"></i> 23:00-23:30 &nbsp; | &nbsp; 
-                              <a href="#"> Подробнее </a>
-                            </h6>
-                          </div>
-                        </div>
-
-                        <hr>
-
-                        <div class="row list_item">
-                          <!-- User photo -->
-                          <div class="small-3 columns" style="padding-right:0;">
-                            <img src="http://placehold.it/60x60&amp;text=[img]">
-                          </div>
-                          <!-- List item info -->
-                          <div class="small-9 columns">
-                            <h6> <i class="fa fa-flag-o"></i>&nbsp; Студеная улица </h6>
-                            <h6> <i class="fa fa-flag-checkered"></i>&nbsp; улица Максима Горького </h6>
-                            
-                          </div>
-                          <div class="small-12 columns">
-                            <h6> Сегодня &nbsp;<i class="fa fa-clock-o"></i> 23:00-23:30 &nbsp; | &nbsp; 
-                              <a href="#"> Подробнее </a>
-                            </h6>
-                          </div>
-                        </div>
-
-                        <hr>
-
-                        <div class="row list_item">
-                          <!-- User photo -->
-                          <div class="small-3 columns" style="padding-right:0;">
-                            <img src="http://placehold.it/60x60&amp;text=[img]">
-                          </div>
-                          <!-- List item info -->
-                          <div class="small-9 columns">
-                            <h6> <i class="fa fa-flag-o"></i>&nbsp; Студеная улица </h6>
-                            <h6> <i class="fa fa-flag-checkered"></i>&nbsp; улица Максима Горького </h6>
-                            
-                          </div>
-                          <div class="small-12 columns">
-                            <h6> Сегодня &nbsp;<i class="fa fa-clock-o"></i> 23:00-23:30 &nbsp; | &nbsp; 
-                              <a href="#"> Подробнее </a>
-                            </h6>
-                          </div>
-                        </div>
-
-                        <hr>
-
-                        <div class="row list_item">
-                          <!-- User photo -->
-                          <div class="small-3 columns" style="padding-right:0;">
-                            <img src="http://placehold.it/60x60&amp;text=[img]">
-                          </div>
-                          <!-- List item info -->
-                          <div class="small-9 columns">
-                            <h6> <i class="fa fa-flag-o"></i>&nbsp; Студеная улица </h6>
-                            <h6> <i class="fa fa-flag-checkered"></i>&nbsp; улица Максима Горького </h6>
-                            
-                          </div>
-                          <div class="small-12 columns">
-                            <h6> Сегодня &nbsp;<i class="fa fa-clock-o"></i> 23:00-23:30 &nbsp; | &nbsp; 
-                              <a href="#"> Подробнее </a>
-                            </h6>
-                          </div>
-                        </div>
-
-                        <hr>
-
-                        <div class="row list_item">
-                          <!-- User photo -->
-                          <div class="small-3 columns" style="padding-right:0;">
-                            <img src="http://placehold.it/60x60&amp;text=[img]">
-                          </div>
-                          <!-- List item info -->
-                          <div class="small-9 columns">
-                            <h6> <i class="fa fa-flag-o"></i>&nbsp; Студеная улица </h6>
-                            <h6> <i class="fa fa-flag-checkered"></i>&nbsp; улица Максима Горького </h6>
-                            
-                          </div>
-                          <div class="small-12 columns">
-                            <h6> Сегодня &nbsp;<i class="fa fa-clock-o"></i> 23:00-23:30 &nbsp; | &nbsp; 
-                              <a href="#"> Подробнее </a>
-                            </h6>
-                          </div>
-                        </div>
-
-                        <hr>
-
-                        
-
+<?php endforeach;?>
                       </div>
                     </div> </div>
                   </div>
                   <!-- Add Trip Tab -->
-                  <div class="content" id="add_trip">
+                  <div class="content <?php if($mode==1) echo 'active';?>" id="add_trip">
                     <h5><i class="fa fa-road"></i>&nbsp;&nbsp;Данные о поездке </h5>
                     <form action="add_route" method="post">
                       <!--fieldset>
@@ -349,6 +168,7 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
                           </div>
                           <div class="small-6 large-8 columns">
                             <input id="startPlacemarkValue" type="text" placeholder="Откуда забрать">
+                            <input type="hidden" name="departureCoord" id="departureCoord">
                             <!--small class="error">Необходимо указать начальную точку</small-->
                           </div>
                           <div class="small-3 large-2 columns">
@@ -363,6 +183,7 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
                           </div>
                           <div class="small-6 large-8 columns">
                             <input id="finishPlacemarkValue" type="text" placeholder="Куда довезти">
+                            <input type="hidden" name="destinationCoord" id="destinationCoord">
                           </div>
                           <div class="small-3 large-2 columns">
                             <a class="button postfix" onClick="searchFinishPlacemarkByForm()"><i class="fa fa-search"></i></a>
@@ -375,7 +196,7 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
                             <span class="prefix"><i class="fa fa-calendar"></i></span>
                           </div>
                           <div class="small-9 large-10 columns">
-                            <input id="startDate" type="text" placeholder="ДД.ММ.ГГГГ">
+                            <input id="startDate" name="startDate" type="text" placeholder="ДД.ММ.ГГГГ">
                           </div>
                         </div>
 
@@ -385,13 +206,13 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
                             <span class="prefix">C:</i> </span>
                           </div>
                           <div class="small-4 columns">
-                            <input id="startTime" type="text" placeholder="ЧЧ:ММ">
+                            <input id="startTime" name="startTime" type="text" placeholder="ЧЧ:ММ">
                           </div>
                           <div class="small-2 columns">
                             <span class="prefix">По:</span>
                           </div>
                           <div class="small-4 columns">
-                            <input id="finishTime" type="text" placeholder="ЧЧ:ММ">
+                            <input id="finishTime" name="finishTime" type="text" placeholder="ЧЧ:ММ">
                           </div>
                         </div>
 
@@ -439,7 +260,7 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
                                 <span class="prefix"> Свободные места: </span>
                               </div>
                               <div class="small-6 columns">
-                                <select id="passangers_quantity">
+                                <select id="passangers_quantity" name="passangers_quantity">
                                   <option value="1" selected="selected">1</option>
                                   <option value="2">2</option>
                                   <option value="3">3</option>
@@ -457,7 +278,7 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
                       <div class="row collapse">
                         <div class="large-12 columns text-center">
                           <label>Доп. информация
-                            <textarea id="additional_info" placeholder="Введите при необходимости"></textarea>
+                            <textarea id="additional_info" name="extra" placeholder="Введите при необходимости"></textarea>
                           </label>
                         </div>
                       </div>
