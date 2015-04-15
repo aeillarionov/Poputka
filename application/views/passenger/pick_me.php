@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="<?php echo asset_url(); ?>css/foundation.css">
 
   <!-- If you are using the gem version, you need this only -->
-  <link rel="stylesheet" href="<?php echo asset_url(); ?>css/pick_me.css">
+  <link rel="stylesheet" href="<?php echo asset_url(); ?>css/add_trip.css">
   <link rel="stylesheet" href="<?php echo asset_url(); ?>css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="<?php echo asset_url(); ?>css/jquery.datetimepicker.css">
 
@@ -37,9 +37,9 @@
     <section class="top-bar-section">
       <ul class="right">
           <li class="divider"></li>
-            <li class="active has-dropdown"><a href="#"><i class="fa fa-car"></i> &nbsp; Я - пешеход   </a>
+            <li class="active has-dropdown"><a href="#"><i class="fa fa-user"></i> &nbsp; Я - пешеход   </a>
               <ul class="dropdown">
-                <li class="active"><a  href="../driver/show_requests"><i class="fa fa-user"></i> &nbsp; Я - водитель  </a></li>
+                <li class="active"><a  href="../driver/show_requests"><i class="fa fa-car"></i> &nbsp; Я - водитель  </a></li>
               </ul>
             </li>
           <li class="divider"></li>
@@ -100,107 +100,158 @@
           </div-->
 
           <!-- Route parameters & save placeholder -->
-          <div class="small-4 columns">
+          <div class="small-4 columns left_panel_container">
 
             <!-- Start placemark area -->
             <div class="row">             
               <div class="small-12 columns text-center">
-                <h5><i class="fa fa-road"></i>&nbsp;&nbsp;Данные о поездке </h5>
-                <form action="add_request" method="post">
-                  <!--fieldset>
-                    <legend>Данные о поездке</legend-->
-                    <!-- Start point -->
+                <!-- Add or view tabs -->
+                <ul class="tabs" data-tab>
+                  <li class="tab-title <?php if($mode==0) echo 'active';?>"><a href="#list_view">Водители</a></li>
+                  <li class="tab-title <?php if($mode==1) echo 'active';?>"><a href="#add_trip">Новый маршрут</a></li>
+                </ul>
+                <div class="tabs-content">
+                  <!-- List Tab -->
+                  <div class="content <?php if($mode==0) echo 'active';?>" id="list_view">
+                    <div class="row"> <div class="small-12 columns">
+                      <dl class="sub-nav">
+                        <!--dt>Фильтр:</dt-->
+                        <dd class="active"><a href="#">Все</a></dd>
+                        <dd><a href="#">По пути</a></dd>
+                        <dd><a href="#">Ближайшие</a></dd>
+                      </dl>
+                      <div class="list_container">
+<?php
+foreach($routes as $route):
+$from_time_arr = getdate($route['from_time']);
+$mins = $from_time_arr['minutes']<10 ? '0'.$from_time_arr['minutes'] : $from_time_arr['minutes'];
+$time_str = $from_time_arr['hours'].':'.$mins.' - ';
+$to_time_arr = getdate($route['to_time']);
+$mins = $to_time_arr['minutes'] < 10 ? '0'.$to_time_arr['minutes'] : $to_time_arr['minutes'];
+$time_str .= $to_time_arr['hours'].':'.$mins;
+?>
+	<div class="row list_item">
+	  <!-- User photo -->
+	  <div class="small-3 columns" style="padding-right:0;">
+		<img src="<?php echo $route['pic_url']?>">
+	  </div>
+	  <!-- List item info -->
+	  <div class="small-9 columns">
+		<h6> <i class="fa fa-flag-o"></i>&nbsp; <?php echo $route['departure'];?> </h6>
+		<h6> <i class="fa fa-flag-checkered"></i>&nbsp; <?php echo $route['destination'];?> </h6>
+		<h6> <?php echo 'Доп. инфо: '.$route['extra'];?> </h6>
+	  </div>
+	  <div class="small-12 columns">
+		<h6> Сегодня &nbsp;<i class="fa fa-clock-o"></i> <?php echo $time_str;?> &nbsp; | &nbsp; 
+		  <a href="#"> Подробнее </a>
+		</h6>
+	  </div>
+	</div>
 
-                    <div class="row collapse">
-                      <div class="small-3 large-2 columns">
-                        <span class="prefix">Из:</span>
-                      </div>
-                      <div class="small-6 large-8 columns">
-                        <input id="startPlacemarkValue" type="text" placeholder="Откуда забрать">
-                        <input type="hidden" name="departureCoord" id="departureCoord">
-                        <!--small class="error">Необходимо указать начальную точку</small-->
-                      </div>
-                      <div class="small-3 large-2 columns">
-                        <a class="button postfix" onClick="searchStartPlacemarkByForm()"><i class="fa fa-search"></i></a>
-                      </div>
-                    </div>
+	<hr>
 
-                    <!-- Finish point -->
-                    <div class="row collapse">
-                      <div class="small-3 large-2 columns">
-                        <span class="prefix">В:</span>
+<?php endforeach;?>
                       </div>
-                      <div class="small-6 large-8 columns">
-                        <input id="finishPlacemarkValue" type="text" placeholder="Куда довезти">
-                        <input type="hidden" name="destinationCoord" id="destinationCoord">
-                      </div>
-                      <div class="small-3 large-2 columns">
-                        <a class="button postfix" onClick="searchFinishPlacemarkByForm()"><i class="fa fa-search"></i></a>
-                      </div>
-                    </div>
-
-                    <!-- Date -->
-                    <div class="row collapse">
-                      <div class="small-3 large-2 columns">
-                        <span class="prefix"><i class="fa fa-calendar"></i></span>
-                      </div>
-                      <div class="small-9 large-10 columns">
-                        <input id="startDate" name="startDate" type="text" placeholder="ДД.ММ.ГГГГ">
-                      </div>
-                    </div>
-
-                    <!-- Time -->
-                    <div class="row collapse">
-                      <div class="small-2 columns">
-                        <span class="prefix">C:</i> </span>
-                      </div>
-                      <div class="small-4 columns">
-                        <input id="startTime" name="startTime" type="text" placeholder="ЧЧ:ММ">
-                      </div>
-                      <div class="small-2 columns">
-                        <span class="prefix">По:</span>
-                      </div>
-                      <div class="small-4 columns">
-                        <input id="finishTime" name="finishTime" type="text" placeholder="ЧЧ:ММ">
-                      </div>
-                    </div>
-
-                    <!-- Frequency -->
-                    <div class="row collapse frequency">
-                      <div class="small-6 columns text-center"> 
-                      <label>Один раз
-                        <div class="switch tiny ">
-                          <input id="isOneoffRadioSwitch" type="radio" checked name="frequencySwitchGroup">
-                          <label for="isOneoffRadioSwitch"></label>
-                        </div>
-                      </label>
-                    </div>
-                    <div class="small-6 columns text-center">
-                      <label>Регулярно
-                        <div class="switch tiny ">
-                          <input id="isRegularRadioSwitch" type="radio" name="frequencySwitchGroup">
-                          <label for="isRegularRadioSwitch"></label>
-                        </div>
-                      </label>
-                    </div>
+                    </div> </div>
                   </div>
-                  <!-- Week choice -->
-                  <div class="row collapse weekdayChoice">
-                    <div class="small-12 columns text-center"> 
-                      <!-- Radius Button Group -->
-                      <ul class="button-group radius even-7 ">
-                        <li><a href="#" class="button tiny">Пн</a></li>
-                        <li><a href="#" class="button tiny">Вт</a></li>
-                        <li><a href="#" class="button tiny">Ср</a></li>
-                        <li><a href="#" class="button tiny">Чт</a></li>
-                        <li><a href="#" class="button tiny">Пт</a></li>
-                        <li><a href="#" class="button tiny">Сб</a></li>
-                        <li><a href="#" class="button tiny">Вс</a></li>
-                      </ul>
-                    </div>
-                  </div>
+                  <!-- Add Trip Tab -->
+                  <div class="content <?php if($mode==1) echo 'active';?>" id="add_trip">
+                    <h5><i class="fa fa-road"></i>&nbsp;&nbsp;Данные о маршруте </h5>
+                    <form action="add_request" method="post">
+                      <!--fieldset>
+                        <legend>Данные о поездке</legend-->
+                        <!-- Start point -->
 
-                  <!-- Passengers -->
+                        <div class="row collapse">
+                          <div class="small-3 large-2 columns">
+                            <span class="prefix">Из:</span>
+                          </div>
+                          <div class="small-6 large-8 columns">
+                            <input id="startPlacemarkValue" type="text" placeholder="Откуда забрать">
+                            <input type="hidden" name="departureCoord" id="departureCoord">
+                            <!--small class="error">Необходимо указать начальную точку</small-->
+                          </div>
+                          <div class="small-3 large-2 columns">
+                            <a class="button postfix" onClick="searchStartPlacemarkByForm()"><i class="fa fa-search"></i></a>
+                          </div>
+                        </div>
+
+                        <!-- Finish point -->
+                        <div class="row collapse">
+                          <div class="small-3 large-2 columns">
+                            <span class="prefix">В:</span>
+                          </div>
+                          <div class="small-6 large-8 columns">
+                            <input id="finishPlacemarkValue" type="text" placeholder="Куда довезти">
+                            <input type="hidden" name="destinationCoord" id="destinationCoord">
+                          </div>
+                          <div class="small-3 large-2 columns">
+                            <a class="button postfix" onClick="searchFinishPlacemarkByForm()"><i class="fa fa-search"></i></a>
+                          </div>
+                        </div>
+
+                        <!-- Date -->
+                        <div class="row collapse">
+                          <div class="small-3 large-2 columns">
+                            <span class="prefix"><i class="fa fa-calendar"></i></span>
+                          </div>
+                          <div class="small-9 large-10 columns">
+                            <input id="startDate" name="startDate" type="text" placeholder="ДД.ММ.ГГГГ">
+                          </div>
+                        </div>
+
+                        <!-- Time -->
+                        <div class="row collapse">
+                          <div class="small-2 columns">
+                            <span class="prefix">C:</i> </span>
+                          </div>
+                          <div class="small-4 columns">
+                            <input id="startTime" name="startTime" type="text" placeholder="ЧЧ:ММ">
+                          </div>
+                          <div class="small-2 columns">
+                            <span class="prefix">По:</span>
+                          </div>
+                          <div class="small-4 columns">
+                            <input id="finishTime" name="finishTime" type="text" placeholder="ЧЧ:ММ">
+                          </div>
+                        </div>
+
+                        <!-- Frequency -->
+                        <div class="row collapse frequency">
+                          <div class="small-6 columns text-center"> 
+                          <label>Один раз
+                            <div class="switch tiny ">
+                              <input id="isOneoffRadioSwitch" type="radio" checked name="frequencySwitchGroup">
+                              <label for="isOneoffRadioSwitch"></label>
+                            </div>
+                          </label>
+                        </div>
+                        <div class="small-6 columns text-center">
+                          <label>Регулярно
+                            <div class="switch tiny ">
+                              <input id="isRegularRadioSwitch" type="radio" name="frequencySwitchGroup">
+                              <label for="isRegularRadioSwitch"></label>
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+                      <!-- Week choice -->
+                      <div class="row collapse weekdayChoice">
+                        <div class="small-12 columns text-center"> 
+                          <!-- Radius Button Group -->
+                          <ul class="button-group radius even-7 ">
+                            <li><a href="#" class="button tiny">Пн</a></li>
+                            <li><a href="#" class="button tiny">Вт</a></li>
+                            <li><a href="#" class="button tiny">Ср</a></li>
+                            <li><a href="#" class="button tiny">Чт</a></li>
+                            <li><a href="#" class="button tiny">Пт</a></li>
+                            <li><a href="#" class="button tiny">Сб</a></li>
+                            <li><a href="#" class="button tiny">Вс</a></li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      <!-- Passengers -->
                   <div class="row collapse passangers">
                     <div class="small-12 columns text-center">
                       <label for="right-label" class="">Пассажиры
@@ -244,24 +295,26 @@
                     </div>
                   </div>
 
-                  <!-- Comment -->
-                  <div class="row collapse">
-                    <div class="large-12 columns text-center">
-                      <label>Доп. информация
-                        <textarea id="additional_info" name="extra" placeholder="Введите при необходимости"></textarea>
-                      </label>
-                    </div>
-                  </div>
+                      <!-- Comment -->
+                      <div class="row collapse">
+                        <div class="large-12 columns text-center">
+                          <label>Доп. информация
+                            <textarea id="additional_info" name="extra" placeholder="Введите при необходимости"></textarea>
+                          </label>
+                        </div>
+                      </div>
 
-                  <!-- Submit -->
-                  <div class="row collapse">
-                    <div class="small-12 columns text-center">
-                      <button id="submit_pick_request" class="expand button success">Подвези меня <i class="fa fa-thumbs-up"></i> </button>
-                    </div>
-                  </div>
+                      <!-- Submit -->
+                      <div class="row collapse">
+                        <div class="small-12 columns text-center">
+                          <button id="submit_pick_request" class="expand button success"> <i class="fa fa-car"></i> Подвези меня </button>
+                        </div>
+                      </div>
 
-                  <!--/fieldset-->
-                </form>
+                      <!--/fieldset-->
+                    </form>
+                  </div>
+                </div>
               </div>
             </div>
             

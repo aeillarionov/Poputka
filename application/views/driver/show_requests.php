@@ -167,7 +167,7 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
                             <span class="prefix">Из:</span>
                           </div>
                           <div class="small-6 large-8 columns">
-                            <input id="startPlacemarkValue" type="text" placeholder="Откуда забрать">
+                            <input id="startPlacemarkValue" type="text" placeholder="Откуда еду">
                             <input type="hidden" name="departureCoord" id="departureCoord">
                             <!--small class="error">Необходимо указать начальную точку</small-->
                           </div>
@@ -182,7 +182,7 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
                             <span class="prefix">В:</span>
                           </div>
                           <div class="small-6 large-8 columns">
-                            <input id="finishPlacemarkValue" type="text" placeholder="Куда довезти">
+                            <input id="finishPlacemarkValue" type="text" placeholder="Куда еду">
                             <input type="hidden" name="destinationCoord" id="destinationCoord">
                           </div>
                           <div class="small-3 large-2 columns">

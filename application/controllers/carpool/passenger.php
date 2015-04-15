@@ -4,9 +4,19 @@ class Passenger extends CI_Controller {
 		parent::__construct();
 		$this->load->library('session');
 		$this->load->model('mdl_request');
+		$this->load->model('mdl_route');
 	}
 	public function pick_me(){
-		$this->load->view('passenger/pick_me');
+		$data['routes'] = $this->mdl_route->show_all();
+		$data['mode'] = 0;
+		$this->load->view('passenger/pick_me', $data);
+	}
+	public function show_routes(){
+		if(isset($_SESSION['user_id'])/* && $_SESSION['driver']==1*/){
+			$data['routes'] = $this->mdl_route->show_all();
+			$data['mode'] = 0; /*Switch of tabs: Show drivers|New route, 0 -> Show drivers is active*/
+			$this->load->view('driver/show_requests', $data);
+		}
 	}
 	public function add_request(){
 		if(isset($_SESSION['user_id'])){
