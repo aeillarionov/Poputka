@@ -91,7 +91,7 @@
         </div>
         <div class="row">
           <div class="small-12 columns text-center">
-            <a href="#" class="button category_button">  Найти поездку </a>
+            <a href="carpool/passenger/show_routes" class="button category_button">  Найти поездку </a>
             <a href="carpool/passenger/pick_me" class="button category_button">  Подвези меня  </a>
           </div>
         </div>

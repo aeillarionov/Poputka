@@ -38,14 +38,22 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 			if(isset($_SESSION['user_id'])/* && $_SESSION['driver']==1*/){
 				$data['requests'] = $this->mdl_request->show_all();
 				$data['mode'] = 0; /*Switch of tabs: Show hitchers|New route, 0 -> Show hitchers is active*/
+				$arg['title'] = 'Водителям | Попутчики';
+				$this->load->view('templates/header', $arg);
+				$this->load->view('templates/topbar_driver');
 				$this->load->view('driver/show_requests', $data);
+				$this->load->view('templates/footer');
 			}
 		}
 		public function add_route_page(){
 			if(isset($_SESSION['user_id'])/* && $_SESSION['driver']==1*/){
 				$data['requests'] = $this->mdl_request->show_all();
 				$data['mode'] = 1; /*Switch of tabs: Show hitchers|New route, 1 -> New route is active*/
+				$arg['title'] = 'Водителям | Попутчики';
+				$this->load->view('templates/header', $arg);
+				$this->load->view('templates/topbar_driver');
 				$this->load->view('driver/show_requests', $data);
+				$this->load->view('templates/footer');
 			}
 		}
 		public function add_route(){
@@ -63,7 +71,11 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 				$status = $this->mdl_route->add_route($form_data);
 				if($status){
 					$data['mode'] = 1;
+					$arg['title'] = 'Водителям | Попутчики';
+					$this->load->view('templates/header', $arg);
+					$this->load->view('templates/topbar_driver');
 					$this->load->view('driver/show_requests', $data);
+					$this->load->view('templates/footer');
 				}
 			}
 		}
