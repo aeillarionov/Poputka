@@ -22,8 +22,8 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
 	  </div>
 	  <!-- List item info -->
 	  <div class="small-9 columns">
-		<h6> <i class="fa fa-flag-o"></i>&nbsp; <?php echo $route['departure'];?> </h6>
-		<h6> <i class="fa fa-flag-checkered"></i>&nbsp; <?php echo $route['destination'];?> </h6>
+		<h6> <i class="fa fa-flag-o"></i>&nbsp; <?php echo $route['dep_lat'].','.$route['dep_lon'];?> </h6>
+		<h6> <i class="fa fa-flag-checkered"></i>&nbsp; <?php echo $route['des_lat'].','.$route['des_lon'];?> </h6>
 		<h6> <?php echo 'Доп. инфо: '.$route['extra'];?> </h6>
 	  </div>
 	  <div class="small-12 columns">

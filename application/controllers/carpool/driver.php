@@ -64,9 +64,13 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 		}
 		public function add_route(){
 			if(isset($_SESSION['user_id'])/* && $_SESSION['driver']==1*/){
+				$dep_coord = explode(',', $_POST['departureCoord']);
+				$des_coord = explode(',', $_POST['destinationCoord']);
 				$form_data = array (
-					'departure' => $_POST['departureCoord'],
-					'destination' => $_POST['destinationCoord'],
+					'dep_lat' => 0 + $dep_coord[0],
+					'dep_lon' => 0 + $dep_coord[1],
+					'des_lat' => 0 + $des_coord[0],
+					'des_lon' => 0 + $des_coord[1],
 					'owner_id' => $_SESSION['user_id'],
 					'from_time' => strtotime(str_replace('/', '-', $_POST['startDate']).' '.$_POST['startTime']),
 					'to_time' => strtotime(str_replace('/', '-', $_POST['startDate']).' '.$_POST['finishTime']),

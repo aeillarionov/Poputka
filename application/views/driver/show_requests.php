@@ -75,8 +75,8 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
 	  </div>
 	  <!-- List item info -->
 	  <div class="small-9 columns">
-		<h6> <i class="fa fa-flag-o"></i>&nbsp; <?php echo $request['departure'];?> </h6>
-		<h6> <i class="fa fa-flag-checkered"></i>&nbsp; <?php echo $request['destination'];?> </h6>
+		<h6> <i class="fa fa-flag-o"></i>&nbsp; <?php echo $request['dep_lat'].','.$request['dep_lon'];?> </h6>
+		<h6> <i class="fa fa-flag-checkered"></i>&nbsp; <?php echo $request['des_lat'].','.$request['des_lon'];?> </h6>
 		<h6> <?php echo 'Доп. инфо: '.$request['extra'];?> </h6>
 	  </div>
 	  <div class="small-12 columns">
