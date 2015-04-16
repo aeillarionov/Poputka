@@ -31,4 +31,5 @@
       </ul-->
     </section>
 
-</nav>
+	</nav>
+		<section class="main-section">

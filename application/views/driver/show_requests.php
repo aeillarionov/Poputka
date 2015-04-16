@@ -23,7 +23,7 @@
         </ul>
       </aside-->
 
-      <section class="main-section">
+
         
 
         <!-- Placemarks parameters area -->
@@ -45,7 +45,7 @@
               <div class="small-12 columns text-center">
                 <!-- Add or view tabs -->
                 <ul class="tabs" data-tab>
-                  <li class="tab-title <?php if($mode==0) echo 'active';?>"><a href="#list_view">Попутчики</a></li>
+                  <li class="tab-title <?php if($mode==0) echo 'active';?>" onclick="show_all_requests_list()"><a href="#list_view">Попутчики</a></li>
                   <li class="tab-title <?php if($mode==1) echo 'active';?>"><a href="#add_trip">Новая поездка</a></li>
                 </ul>
                 <div class="tabs-content">
@@ -58,7 +58,7 @@
                         <dd><a href="#">По пути</a></dd>
                         <dd><a href="#">Ближайшие</a></dd>
                       </dl>
-                      <div class="list_container">
+                      <div class="list_container" id="requests_list">
 <?php
 foreach($requests as $request):
 $from_time_arr = getdate($request['from_time']);
@@ -92,6 +92,8 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
                       </div>
                     </div> </div>
                   </div>
+                  
+                  
                   <!-- Add Trip Tab -->
                   <div class="content <?php if($mode==1) echo 'active';?>" id="add_trip">
                     <h5><i class="fa fa-road"></i>&nbsp;&nbsp;Данные о поездке </h5>
@@ -231,7 +233,7 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
                       <!--/fieldset-->
                     </form>
                   </div>
-                </div>
+                </div> <!-- /tabs-content -->
               </div>
             </div>
             
@@ -259,7 +261,7 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
 
         </div>
 
-      </section>
+
 
     <!--a class="exit-off-canvas"></a>
 

@@ -1,3 +1,4 @@
+        </section>
   <footer>
     <div class="row footer">
       <!-- About us -->
@@ -40,6 +41,7 @@
   <script src="<?php echo asset_url(); ?>js/foundation/foundation.topbar.js"></script>
   <script src="<?php echo asset_url(); ?>js/foundation/foundation.abide.js"></script>
   <script src="<?php echo asset_url(); ?>js/vendor/jquery.datetimepicker.js"></script>
+  <script src="<?php echo asset_url(); ?>js/ajax_functions.js"></script>
   <script>
     $(document).foundation();
   </script>

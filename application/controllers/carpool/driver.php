@@ -45,6 +45,12 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 				$this->load->view('templates/footer');
 			}
 		}
+		public function show_all_requests_list(){
+			if(isset($_SESSION['user_id'])/* && $_SESSION['driver']==1*/){
+				$data['requests'] = $this->mdl_request->show_all();
+				$this->load->view('driver/all_requests_list', $data);
+			}
+		}
 		public function add_route_page(){
 			if(isset($_SESSION['user_id'])/* && $_SESSION['driver']==1*/){
 				$data['requests'] = $this->mdl_request->show_all();

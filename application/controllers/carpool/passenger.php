@@ -26,6 +26,12 @@ class Passenger extends CI_Controller {
 			$this->load->view('templates/footer');
 		}
 	}
+	public function show_all_routes_list(){
+			if(isset($_SESSION['user_id'])/* && $_SESSION['driver']==1*/){
+				$data['routes'] = $this->mdl_route->show_all();
+				$this->load->view('passenger/all_routes_list', $data);
+			}
+		}
 	public function add_request(){
 		if(isset($_SESSION['user_id'])){
 			$form_data = array (
@@ -40,10 +46,11 @@ class Passenger extends CI_Controller {
 			);
 			$status = $this->mdl_request->add_request($form_data);
 			if($status){
+				$data['mode'] = 1;
 				$arg['title'] = 'Подвези меня | Попутчики';
 				$this->load->view('templates/header', $arg);
 				$this->load->view('templates/topbar_passenger');
-				$this->load->view('passenger/pick_me');
+				$this->load->view('passenger/pick_me', $data);
 				$this->load->view('templates/footer');
 			}
 		}
