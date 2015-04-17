@@ -1,3 +1,7 @@
+<!-- Empty the array of map points -->
+<script>
+	map_points = [];
+</script>
 <dl class="sub-nav">
 	<!--dt>Фильтр:</dt-->
 	<dd class="active"><a href="#">Все</a></dd>
@@ -34,6 +38,18 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
 	</div>
 
 	<hr>
-
+<script>
+	var route_coords = {
+		'dep_lat': <?php echo $route['dep_lat'];?>,
+		'dep_lon': <?php echo $route['dep_lon'];?>,
+		'des_lat': <?php echo $route['des_lat'];?>,
+		'des_lon': <?php echo $route['des_lon'];?>,
+		'pic_url': <?php echo '"'.$route['pic_url'].'"';?>
+	};
+	map_points.push(route_coords);
+</script>
 <?php endforeach;?>
+<script>
+	showMapPoints(YMap, map_points);
+</script>
                       </div>
