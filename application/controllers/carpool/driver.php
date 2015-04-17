@@ -66,19 +66,21 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 			if(isset($_SESSION['user_id'])/* && $_SESSION['driver']==1*/){
 				$dep_coord = explode(',', $_POST['departureCoord']);
 				$des_coord = explode(',', $_POST['destinationCoord']);
-				$form_data = array (
+				$geo_data = array (
 					'dep_lat' => 0 + $dep_coord[0],
 					'dep_lon' => 0 + $dep_coord[1],
 					'des_lat' => 0 + $des_coord[0],
 					'des_lon' => 0 + $des_coord[1],
+				);
+				$route_data = array (
 					'owner_id' => $_SESSION['user_id'],
 					'from_time' => strtotime(str_replace('/', '-', $_POST['startDate']).' '.$_POST['startTime']),
 					'to_time' => strtotime(str_replace('/', '-', $_POST['startDate']).' '.$_POST['finishTime']),
 					'regular' => $_POST['frequencySwitchGroup'] ? 1 : 0,
 					'spots' => $_POST['passangers_quantity'],
-					'extra' => $_POST['extra']
+					'extra' => $_POST['extra'],
 				);
-				$status = $this->mdl_route->add_route($form_data);
+				$status = $this->mdl_route->add_route($geo_data, $route_data);
 				if($status){
 					$data['mode'] = 1;
 					$arg['title'] = 'Водителям | Попутчики';
