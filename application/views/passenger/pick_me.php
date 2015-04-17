@@ -71,7 +71,7 @@ $to_time_arr = getdate($route['to_time']);
 $mins = $to_time_arr['minutes'] < 10 ? '0'.$to_time_arr['minutes'] : $to_time_arr['minutes'];
 $time_str .= $to_time_arr['hours'].':'.$mins;
 ?>
-	<div class="row list_item">
+	<div class="row list_item" id="list_item_<?php echo $route['route_id'];?>" onmouseover="highlightMark(this)" onmouseout="defaultMark(this)">
 	  <!-- User photo -->
 	  <div class="small-3 columns" style="padding-right:0;">
 		<img src="<?php echo $route['pic_url']?>">
@@ -93,6 +93,7 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
 <!-- Fill the array of map points -->
 <script>
 	var route_coords = {
+		'point_id': <?php echo $route['route_id'];?>,
 		'dep_lat': <?php echo $route['dep_lat'];?>,
 		'dep_lon': <?php echo $route['dep_lon'];?>,
 		'des_lat': <?php echo $route['des_lat'];?>,

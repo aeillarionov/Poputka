@@ -6,6 +6,7 @@ var setAsStartPlacemark;
 var setAsFinishPlacemark;
 var deleteSearchPlacemark;
 var searchControl;
+var mapPlacemarks = [];
 function init(){   
     YMap = new ymaps.Map("ymap", {
         center: [55.76, 37.64],
@@ -310,9 +311,27 @@ function showMapPoints (map, points){
 			iconContentSize: [27, 27],
 		}
 		);
+		var index = item.point_id;
+		mapPlacemarks[index] = point;
 		map.geoObjects.add(point);
 	});
 }
 function clearMap(){
 	YMap.geoObjects.removeAll();
+}
+function highlightMark(item){
+	var item_id = item.id;
+	var mark_id = +item_id.replace('list_item_', '');
+	var placemark = mapPlacemarks[mark_id];
+	placemark.options.set('iconImageSize',[50, 50]);
+	placemark.options.set('iconImageOffset',[-25, -50]);
+	placemark.options.set('iconContentOffset',[12, 7]);
+}
+function defaultMark(item){
+	var item_id = item.id;
+	var mark_id = +item_id.replace('list_item_', '');
+	var placemark = mapPlacemarks[mark_id];
+	placemark.options.set('iconImageSize',[40, 40]);
+	placemark.options.set('iconImageOffset',[-20, -40]);
+	placemark.options.set('iconContentOffset',[7, 3]);
 }
