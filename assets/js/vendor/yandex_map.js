@@ -6,7 +6,8 @@ var setAsStartPlacemark;
 var setAsFinishPlacemark;
 var deleteSearchPlacemark;
 var searchControl;
-var mapPlacemarks = [];
+var startPlacemarks = [];
+var finishPlacemarks = [];
 function init(){   
     YMap = new ymaps.Map("ymap", {
         center: [55.76, 37.64],
@@ -297,7 +298,7 @@ function searchStartPlacemarkByForm(){
 function showMapPoints (map, points){
 	map.geoObjects.removeAll();
 	points.forEach(function(item, i, arr){
-		var point = new ymaps.Placemark([item.dep_lat, item.dep_lon],
+		var startPoint = new ymaps.Placemark([item.dep_lat, item.dep_lon],
 		{
 			hintContent: '',
 			iconContent: '<img style="border-radius: 50%" src="'+ item.pic_url +'">',
@@ -312,8 +313,26 @@ function showMapPoints (map, points){
 		}
 		);
 		var index = item.point_id;
-		mapPlacemarks[index] = point;
-		map.geoObjects.add(point);
+		startPlacemarks[index] = startPoint;
+		map.geoObjects.add(startPoint);
+		startPoint.events.add('click', function(placemark, e){
+			showFinishMarkById(index);
+		});
+		var finishPoint = new ymaps.Placemark([item.des_lat, item.des_lon],
+		{
+			hintContent: '',
+			iconContent: '<img style="border-radius: 50%" src="'+ item.pic_url +'">',
+			
+		},{
+			iconLayout: 'default#imageWithContent',
+			iconImageHref: "../../assets/img/map_pin3.png",
+			iconImageSize: [40, 40],
+			iconImageOffset: [-20, -40],
+			iconContentOffset: [7, 3],
+			iconContentSize: [27, 27],
+		}
+		);
+		finishPlacemarks[index] = finishPoint;
 	});
 }
 function clearMap(){
@@ -322,7 +341,7 @@ function clearMap(){
 function highlightMark(item){
 	var item_id = item.id;
 	var mark_id = +item_id.replace('list_item_', '');
-	var placemark = mapPlacemarks[mark_id];
+	var placemark = startPlacemarks[mark_id];
 	placemark.options.set('iconImageSize',[50, 50]);
 	placemark.options.set('iconImageOffset',[-25, -50]);
 	placemark.options.set('iconContentOffset',[12, 7]);
@@ -330,8 +349,36 @@ function highlightMark(item){
 function defaultMark(item){
 	var item_id = item.id;
 	var mark_id = +item_id.replace('list_item_', '');
-	var placemark = mapPlacemarks[mark_id];
+	var placemark = startPlacemarks[mark_id];
 	placemark.options.set('iconImageSize',[40, 40]);
 	placemark.options.set('iconImageOffset',[-20, -40]);
 	placemark.options.set('iconContentOffset',[7, 3]);
+}
+function defaultAllMarks(){
+	startPlacemarks.forEach( function(item, i, arr){
+		item.options.set('iconImageHref', '../../assets/img/map_pin.png');
+	});
+}
+function showFinishMark(item){
+	hideFinishMarks();
+	defaultAllMarks();
+	var item_id = item.id;
+	var mark_id = +item_id.replace('list_item_', '');
+	var placemark = finishPlacemarks[mark_id];
+	YMap.geoObjects.add(placemark);
+	placemark = startPlacemarks[mark_id];
+	placemark.options.set('iconImageHref', '../../assets/img/map_pin2.png');
+}
+function showFinishMarkById(mark_id){
+	hideFinishMarks();
+	defaultAllMarks();
+	var placemark = finishPlacemarks[mark_id];
+	YMap.geoObjects.add(placemark);
+	placemark = startPlacemarks[mark_id];
+	placemark.options.set('iconImageHref', '../../assets/img/map_pin2.png');
+}
+function hideFinishMarks(){
+	finishPlacemarks.forEach( function(item, i, arr){
+		YMap.geoObjects.remove(item);
+	});
 }
