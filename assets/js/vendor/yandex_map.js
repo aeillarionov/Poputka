@@ -345,11 +345,19 @@ function highlightMark(item){
 	placemark.options.set('iconImageSize',[50, 50]);
 	placemark.options.set('iconImageOffset',[-25, -50]);
 	placemark.options.set('iconContentOffset',[12, 7]);
+	var placemark = finishPlacemarks[mark_id];
+	placemark.options.set('iconImageSize',[50, 50]);
+	placemark.options.set('iconImageOffset',[-25, -50]);
+	placemark.options.set('iconContentOffset',[12, 7]);
 }
 function defaultMark(item){
 	var item_id = item.id;
 	var mark_id = +item_id.replace('list_item_', '');
 	var placemark = startPlacemarks[mark_id];
+	placemark.options.set('iconImageSize',[40, 40]);
+	placemark.options.set('iconImageOffset',[-20, -40]);
+	placemark.options.set('iconContentOffset',[7, 3]);
+	var placemark = finishPlacemarks[mark_id];
 	placemark.options.set('iconImageSize',[40, 40]);
 	placemark.options.set('iconImageOffset',[-20, -40]);
 	placemark.options.set('iconContentOffset',[7, 3]);
