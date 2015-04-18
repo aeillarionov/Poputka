@@ -31,6 +31,35 @@
 			
 			return $req_arr;
 		}
+		public function showMyRequests(){
+			$owner_id = $_SESSION['user_id'];
+			$this->db->where('user_id', $owner_id);
+			$query = $this->db->get('users_info');
+			$res = $query->row_array();
+			$pic_url = $res['pic_url'];
+			$this->db->order_by('request_id', 'desc');
+			$this->db->where('owner_id', $owner_id);
+			$query = $this->db->get('requests');
+			$req_arr = $query->result_array();
+			$i=0;
+			foreach($req_arr as $req):
+				$point_id = $req['point_id'];
+				$this->db->where('point_id', $point_id);
+				$query = $this->db->get('points');
+				$res = $query->row_array();
+				$req_arr[$i]['index'] = $i+1;
+				$req_arr[$i]['pic_url'] = $pic_url;
+				$req_arr[$i]['dep_lat'] = $res['dep_lat'];
+				$req_arr[$i]['dep_lon'] = $res['dep_lon'];
+				$req_arr[$i]['dep_addr'] = $res['dep_addr'];
+				$req_arr[$i]['des_lat'] = $res['des_lat'];
+				$req_arr[$i]['des_lon'] = $res['des_lon'];
+				$req_arr[$i]['des_addr'] = $res['des_addr'];
+				$i++;
+			endforeach;
+			
+			return $req_arr;
+		}
 		public function add_request($geo_data, $request_data){
 			$query = $this->db->insert('points', $geo_data);
 			$request_data['point_id'] = $this->db->insert_id();

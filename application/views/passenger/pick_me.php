@@ -57,7 +57,7 @@
                       <dl class="sub-nav">
                         <!--dt>Фильтр:</dt-->
                         <dd class="active"><a href="#">Все</a></dd>
-                        <dd><a href="#">По пути</a></dd>
+                        <dd onclick="showMyRequests()"><a href="#">По пути</a></dd>
                         <dd><a href="#">Ближайшие</a></dd>
                       </dl>
                       <div class="list_container" id="routes_list">

@@ -51,6 +51,12 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 				$this->load->view('driver/all_requests_list', $data);
 			}
 		}
+		public function showMyRoutes(){
+		if(isset($_SESSION['user_id'])){
+			$data['routes'] = $this->mdl_route->showMyRoutes();
+			$this->load->view('driver/my_routes', $data);
+		}
+	}
 		public function add_route_page(){
 			if(isset($_SESSION['user_id'])/* && $_SESSION['driver']==1*/){
 				$data['requests'] = $this->mdl_request->show_all();

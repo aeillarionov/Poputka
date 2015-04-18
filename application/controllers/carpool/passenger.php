@@ -32,6 +32,12 @@ class Passenger extends CI_Controller {
 				$this->load->view('passenger/all_routes_list', $data);
 			}
 		}
+	public function showMyRequests(){
+		if(isset($_SESSION['user_id'])){
+			$data['requests'] = $this->mdl_request->showMyRequests();
+			$this->load->view('passenger/my_requests', $data);
+		}
+	}
 	public function add_request(){
 		if(isset($_SESSION['user_id'])){
 			$dep_coord = explode(',', $_POST['departureCoord']);
