@@ -57,7 +57,7 @@
                       <dl class="sub-nav">
                         <!--dt>Фильтр:</dt-->
                         <dd class="active"><a href="#">Все</a></dd>
-                        <dd><a href="#">По пути</a></dd>
+                        <dd onclick="showMyRoutes()"><a href="#">По пути</a></dd>
                         <dd><a href="#">Ближайшие</a></dd>
                       </dl>
                       <div class="list_container" id="requests_list">
@@ -153,6 +153,7 @@
                           <div class="small-6 large-8 columns">
                             <input id="startPlacemarkValue" type="text" placeholder="Откуда еду">
                             <input type="hidden" name="departureCoord" id="departureCoord">
+                            <input type="hidden" name="dep_addr" id="dep_addr">
                             <!--small class="error">Необходимо указать начальную точку</small-->
                           </div>
                           <div class="small-3 large-2 columns">
@@ -168,6 +169,7 @@
                           <div class="small-6 large-8 columns">
                             <input id="finishPlacemarkValue" type="text" placeholder="Куда еду">
                             <input type="hidden" name="destinationCoord" id="destinationCoord">
+                            <input type="hidden" name="des_addr" id="des_addr">
                           </div>
                           <div class="small-3 large-2 columns">
                             <a class="button postfix" onClick="searchFinishPlacemarkByForm()"><i class="fa fa-search"></i></a>

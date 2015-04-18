@@ -23,6 +23,9 @@
   <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
   <script src="<?php echo asset_url(); ?>js/vendor/yandex_map.modules.js"></script>
   <script src="<?php echo asset_url(); ?>js/vendor/yandex_map.js"></script>
+  
+  <!-- Ajax functions -->
+  <script src="<?php echo asset_url(); ?>js/ajax_functions.js"></script>
 
 </head>
 <body>

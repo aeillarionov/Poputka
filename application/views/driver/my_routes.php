@@ -2,13 +2,13 @@
 <script>
 	map_points = [];
 </script>
+
 <dl class="sub-nav">
 	<!--dt>Фильтр:</dt-->
-	<dd class="active"><a href="#">Все</a></dd>
-	<dd onclick="showMyRequests()"><a href="#">По пути</a></dd>
+	<dd onclick="show_all_requests_list()"><a href="#">Все</a></dd>
+	<dd class="active" onclick="showMyRoutes()"><a href="#">По пути</a></dd>
 	<dd><a href="#">Ближайшие</a></dd>
 </dl>
-
 <div class="list_container" id="routes_list">
 <?php
 foreach($routes as $route):
@@ -20,12 +20,13 @@ $mins = $to_time_arr['minutes'] < 10 ? '0'.$to_time_arr['minutes'] : $to_time_ar
 $time_str .= $to_time_arr['hours'].':'.$mins;
 ?>
 	<div class="row list_item" id="list_item_<?php echo $route['route_id'];?>" onmouseover="highlightMark(this)" onmouseout="defaultMark(this)" onclick="showFinishMark(this)">
-	  <!-- User photo -->
+	  <!-- User photo
 	  <div class="small-3 columns" style="padding-right:0;">
-		<img src="<?php echo $route['pic_url']?>">
+		<img src="<?php echo $request['pic_url']?>">
 	  </div>
-	  <!-- List item info -->
-	  <div class="small-9 columns">
+	  List item info -->
+	  <div class="small-9 columns" style="margin-left: 15px;">
+		<h6>Моя поездка<?php echo ' '.$route['index'];?></h6>
 		<h6> <i class="fa fa-flag-o"></i>&nbsp; <?php echo $route['dep_lat'].','.$route['dep_lon'];?> </h6>
 		<h6> <i class="fa fa-flag-checkered"></i>&nbsp; <?php echo $route['des_lat'].','.$route['des_lon'];?> </h6>
 		<h6> <?php echo 'Доп. инфо: '.$route['extra'];?> </h6>
@@ -45,12 +46,12 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
 		'dep_lon': <?php echo $route['dep_lon'];?>,
 		'des_lat': <?php echo $route['des_lat'];?>,
 		'des_lon': <?php echo $route['des_lon'];?>,
-		'pic_url': <?php echo '"'.$route['pic_url'].'"';?>
+		'pic_url': <?php echo '"'.$route['pic_url'].'"';?>,
 	};
 	map_points.push(route_coords);
 </script>
 <?php endforeach;?>
+</div>
 <script>
 	showMapPoints(YMap, map_points);
 </script>
-                      </div>
