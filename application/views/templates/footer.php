@@ -34,7 +34,8 @@
   </footer>
 
   
-
+  <script src="<?php echo asset_url(); ?>js/vendor/yandex_map.modules.js"></script>
+  <script src="<?php echo asset_url(); ?>js/vendor/yandex_map.js"></script>
   <script src="<?php echo asset_url(); ?>js/vendor/jquery.js"></script>
   <script src="<?php echo asset_url(); ?>js/foundation.min.js"></script>
   <script src="<?php echo asset_url(); ?>js/foundation/foundation.topbar.js"></script>
