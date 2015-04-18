@@ -6,7 +6,6 @@ var setAsStartPlacemark;
 var setAsFinishPlacemark;
 var deleteSearchPlacemark;
 var searchControl;
-var mapPlacemarks = [];
 function init(){   
     YMap = new ymaps.Map("ymap", {
         center: [55.76, 37.64],
@@ -25,9 +24,8 @@ function init(){
 		//Center map on geolocation
 		YMap.setCenter(result.geoObjects.get(0).geometry.getCoordinates(), 10);
 	});
+
 	
-	//Отображение меток из массива на карте
-	showMapPoints(YMap, map_points);
 
 	//Изменение балуна метки результата поиска
 	searchControl = YMap.controls.get('searchControl');
@@ -243,44 +241,6 @@ function init(){
 	        YMap.geoObjects.add(pathPolyline);
 	    }
     }
-
-
-    //Построение маршрута по двум точкам
-    function build_route(start_coords, finish_coords){
-    	var multiRoute = new ymaps.multiRouter.MultiRoute({
-	        // Описание опорных точек мультимаршрута.
-	        referencePoints: [
-	            start_coords,
-	            finish_coords
-	        ],
-	        // Параметры маршрутизации.
-	        params: {
-	            // Ограничение на максимальное количество маршрутов, возвращаемое маршрутизатором.
-	            results: 1
-	        }
-	    }, {
-	    	// Внешний вид линии маршрута.
-	        routeStrokeWidth: 2,
-	        routeStrokeColor: "#000088",
-	        routeActiveStrokeWidth: 6,
-	        routeActiveStrokeColor: "#000088",
-	        // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
-	        boundsAutoApply: true
-	    });
-	    YMap.geoObjects.add(multiRoute);
-    }
-
-    $( document ).ready(function() {
-	    var dep_lat, dep_lon, des_lat, des_lon; 
-	    dep_lat = 56.298645360520744;
-	    dep_lon = 44.02325942605588;
-
-	    des_lat = 56.32841297776779;
-	    des_lon = 43.92918899148557;
-
-	    build_route([dep_lat, dep_lon], [des_lat, des_lon]);
-	});
-
 }
 
 // Удаление всех меток
@@ -323,51 +283,12 @@ function searchStartPlacemarkByForm(){
 	    // geoObjectsArr - это массив геообъектов, содержащий результаты запроса.
 	    //var geoObjectsArray = searchControl.getResultsArray();
 	});;
+	
+
+
 	/*searchControl.events.add('load', function (event) {
         if (!event.get('skip') && searchControl.getResultsCount()) {
             searchControl.showResult(0);
         }
     });*/
 }
-function showMapPoints (map, points){
-	map.geoObjects.removeAll();
-	points.forEach(function(item, i, arr){
-		var point = new ymaps.Placemark([item.dep_lat, item.dep_lon],
-		{
-			hintContent: '',
-			iconContent: '<img style="border-radius: 50%" src="'+ item.pic_url +'">',
-			
-		},{
-			iconLayout: 'default#imageWithContent',
-			iconImageHref: "../../assets/img/map_pin.png",
-			iconImageSize: [40, 40],
-			iconImageOffset: [-20, -40],
-			iconContentOffset: [7, 3],
-			iconContentSize: [27, 27],
-		}
-		);
-		var index = item.point_id;
-		mapPlacemarks[index] = point;
-		map.geoObjects.add(point);
-	});
-}
-function clearMap(){
-	YMap.geoObjects.removeAll();
-}
-function highlightMark(item){
-	var item_id = item.id;
-	var mark_id = +item_id.replace('list_item_', '');
-	var placemark = mapPlacemarks[mark_id];
-	placemark.options.set('iconImageSize',[50, 50]);
-	placemark.options.set('iconImageOffset',[-25, -50]);
-	placemark.options.set('iconContentOffset',[12, 7]);
-}
-function defaultMark(item){
-	var item_id = item.id;
-	var mark_id = +item_id.replace('list_item_', '');
-	var placemark = mapPlacemarks[mark_id];
-	placemark.options.set('iconImageSize',[40, 40]);
-	placemark.options.set('iconImageOffset',[-20, -40]);
-	placemark.options.set('iconContentOffset',[7, 3]);
-}
-

@@ -329,6 +329,9 @@ function searchStartPlacemarkByForm(){
         }
     });*/
 }
+<<<<<<< HEAD
+
+=======
 function showMapPoints (map, points){
 	map.geoObjects.removeAll();
 	points.forEach(function(item, i, arr){
@@ -370,4 +373,4 @@ function defaultMark(item){
 	placemark.options.set('iconImageOffset',[-20, -40]);
 	placemark.options.set('iconContentOffset',[7, 3]);
 }
-
+>>>>>>> 1f595261fe308f357dab311f7d2e5cc5367cd2a8

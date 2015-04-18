@@ -22,7 +22,11 @@
           <li><a href="#">Выйти</a></li>
         </ul>
       </aside-->
-        
+
+<!-- Array of points to be shown on the map -->
+<script>
+	var map_points = [];
+</script>        
 
         <!-- Placemarks parameters area -->
         <div class="row zigzag">
@@ -44,7 +48,7 @@
                 <!-- Add or view tabs -->
                 <ul class="tabs" data-tab>
                   <li class="tab-title <?php if($mode==0) echo 'active';?>" onclick="show_all_routes_list()"><a href="#list_view">Водители</a></li>
-                  <li class="tab-title <?php if($mode==1) echo 'active';?>"><a href="#add_trip">Новый маршрут</a></li>
+                  <li class="tab-title <?php if($mode==1) echo 'active';?>" onclick="clearMap()"><a href="#add_trip">Новый маршрут</a></li>
                 </ul>
                 <div class="tabs-content">
                   <!-- List Tab -->
@@ -58,6 +62,7 @@
                       </dl>
                       <div class="list_container" id="routes_list">
 <?php
+if($mode==0){
 foreach($routes as $route):
 $from_time_arr = getdate($route['from_time']);
 $mins = $from_time_arr['minutes']<10 ? '0'.$from_time_arr['minutes'] : $from_time_arr['minutes'];
@@ -66,7 +71,7 @@ $to_time_arr = getdate($route['to_time']);
 $mins = $to_time_arr['minutes'] < 10 ? '0'.$to_time_arr['minutes'] : $to_time_arr['minutes'];
 $time_str .= $to_time_arr['hours'].':'.$mins;
 ?>
-	<div class="row list_item">
+	<div class="row list_item" id="list_item_<?php echo $route['route_id'];?>" onmouseover="highlightMark(this)" onmouseout="defaultMark(this)">
 	  <!-- User photo -->
 	  <div class="small-3 columns" style="padding-right:0;">
 		<img src="<?php echo $route['pic_url']?>">
@@ -85,8 +90,22 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
 	</div>
 
 	<hr>
-
-<?php endforeach;?>
+<!-- Fill the array of map points -->
+<script>
+	var route_coords = {
+		'point_id': <?php echo $route['route_id'];?>,
+		'dep_lat': <?php echo $route['dep_lat'];?>,
+		'dep_lon': <?php echo $route['dep_lon'];?>,
+		'des_lat': <?php echo $route['des_lat'];?>,
+		'des_lon': <?php echo $route['des_lon'];?>,
+		'pic_url': <?php echo '"'.$route['pic_url'].'"';?>
+	};
+	map_points.push(route_coords);
+</script>
+<?php
+endforeach;
+}
+?>
                       </div>
                     </div> </div>
                   </div>

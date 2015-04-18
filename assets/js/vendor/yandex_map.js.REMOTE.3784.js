@@ -243,44 +243,6 @@ function init(){
 	        YMap.geoObjects.add(pathPolyline);
 	    }
     }
-
-
-    //Построение маршрута по двум точкам
-    function build_route(start_coords, finish_coords){
-    	var multiRoute = new ymaps.multiRouter.MultiRoute({
-	        // Описание опорных точек мультимаршрута.
-	        referencePoints: [
-	            start_coords,
-	            finish_coords
-	        ],
-	        // Параметры маршрутизации.
-	        params: {
-	            // Ограничение на максимальное количество маршрутов, возвращаемое маршрутизатором.
-	            results: 1
-	        }
-	    }, {
-	    	// Внешний вид линии маршрута.
-	        routeStrokeWidth: 2,
-	        routeStrokeColor: "#000088",
-	        routeActiveStrokeWidth: 6,
-	        routeActiveStrokeColor: "#000088",
-	        // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
-	        boundsAutoApply: true
-	    });
-	    YMap.geoObjects.add(multiRoute);
-    }
-
-    $( document ).ready(function() {
-	    var dep_lat, dep_lon, des_lat, des_lon; 
-	    dep_lat = 56.298645360520744;
-	    dep_lon = 44.02325942605588;
-
-	    des_lat = 56.32841297776779;
-	    des_lon = 43.92918899148557;
-
-	    build_route([dep_lat, dep_lon], [des_lat, des_lon]);
-	});
-
 }
 
 // Удаление всех меток
@@ -323,6 +285,9 @@ function searchStartPlacemarkByForm(){
 	    // geoObjectsArr - это массив геообъектов, содержащий результаты запроса.
 	    //var geoObjectsArray = searchControl.getResultsArray();
 	});;
+	
+
+
 	/*searchControl.events.add('load', function (event) {
         if (!event.get('skip') && searchControl.getResultsCount()) {
             searchControl.showResult(0);
@@ -370,4 +335,3 @@ function defaultMark(item){
 	placemark.options.set('iconImageOffset',[-20, -40]);
 	placemark.options.set('iconContentOffset',[7, 3]);
 }
-
