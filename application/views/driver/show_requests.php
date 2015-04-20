@@ -56,9 +56,9 @@
                     <div class="row"> <div class="small-12 columns">
                       <dl class="sub-nav">
                         <!--dt>Фильтр:</dt-->
-                        <dd class="active"><a href="#">Все</a></dd>
+                        <dd class="active" onclick="show_all_requests_list()"><a href="#">Все</a></dd>
                         <dd onclick="showMyRoutes()"><a href="#">По пути</a></dd>
-                        <dd><a href="#">Ближайшие</a></dd>
+                        <dd onclick="showNearestRequests()"><a href="#">Ближайшие</a></dd>
                       </dl>
                       <div class="list_container" id="requests_list">
 <?php

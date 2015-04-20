@@ -52,11 +52,20 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 			}
 		}
 		public function showMyRoutes(){
-		if(isset($_SESSION['user_id'])){
-			$data['routes'] = $this->mdl_route->showMyRoutes();
-			$this->load->view('driver/my_routes', $data);
+			if(isset($_SESSION['user_id'])){
+				$data['routes'] = $this->mdl_route->showMyRoutes();
+				$this->load->view('driver/my_routes', $data);
+			}
 		}
-	}
+		public function showNearestRequests($string){
+			if(isset($_SESSION['user_id'])){
+				$coords_arr = explode('-', $string);
+				$lat = +str_replace('_','.',$coords_arr[0]);
+				$lon = +str_replace('_','.',$coords_arr[1]);
+				$data['requests'] = $this->mdl_request->show_nearest($lat, $lon);
+				$this->load->view('driver/show_nearest', $data);
+			}
+		}
 		public function add_route_page(){
 			if(isset($_SESSION['user_id'])/* && $_SESSION['driver']==1*/){
 				$data['requests'] = $this->mdl_request->show_all();

@@ -7,7 +7,7 @@
 	<!--dt>Фильтр:</dt-->
 	<dd onclick="show_all_routes_list()"><a href="#">Все</a></dd>
 	<dd class="active" onclick="showMyRequests()"><a href="#">По пути</a></dd>
-	<dd><a href="#">Ближайшие</a></dd>
+	<dd onclick="showNearestRoutes()"><a href="#">Ближайшие</a></dd>
 </dl>
 <div class="list_container" id="requests_list">
 <?php
@@ -53,5 +53,6 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
 <?php endforeach;?>
 </div>
 <script>
+	clearMap();
 	showMapPoints(YMap, map_points);
 </script>

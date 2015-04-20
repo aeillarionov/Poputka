@@ -38,6 +38,15 @@ class Passenger extends CI_Controller {
 			$this->load->view('passenger/my_requests', $data);
 		}
 	}
+	public function showNearestRoutes($string){
+		if(isset($_SESSION['user_id'])){
+			$coords_arr = explode('-', $string);
+			$lat = +str_replace('_','.',$coords_arr[0]);
+			$lon = +str_replace('_','.',$coords_arr[1]);
+			$data['routes'] = $this->mdl_route->show_nearest($lat, $lon);
+			$this->load->view('passenger/show_nearest', $data);
+		}
+	}
 	public function add_request(){
 		if(isset($_SESSION['user_id'])){
 			$dep_coord = explode(',', $_POST['departureCoord']);

@@ -296,7 +296,6 @@ function searchStartPlacemarkByForm(){
     });*/
 }
 function showMapPoints (map, points){
-	map.geoObjects.removeAll();
 	points.forEach(function(item, i, arr){
 		var startPoint = new ymaps.Placemark([item.dep_lat, item.dep_lon],
 		{
@@ -389,4 +388,43 @@ function hideFinishMarks(){
 	finishPlacemarks.forEach( function(item, i, arr){
 		YMap.geoObjects.remove(item);
 	});
+}
+
+function showNearestRequests() {
+    clearMap();
+    var geolocation = ymaps.geolocation;
+
+    geolocation.get({
+        provider: 'browser',
+        mapStateAutoApply: false
+    }).then(function (result) {
+        // Синим цветом пометим положение, полученное через браузер.
+        // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
+        result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+        YMap.geoObjects.add(result.geoObjects);
+        YMap.setCenter(result.geoObjects.get(0).geometry.getCoordinates(), 12);
+        var myCoords = result.geoObjects.get(0).geometry.getCoordinates();
+        var string = myCoords[0]+'-'+myCoords[1];
+        string = string.replace(/\./g,'_');
+        $('#list_view').load('showNearestRequests/'+string);
+    });
+}
+
+function showNearestRoutes(){
+	clearMap();
+    var geolocation = ymaps.geolocation;
+
+    geolocation.get({
+        provider: 'browser',
+        mapStateAutoApply: false
+    }).then(function (result) {
+        // Синим цветом пометим положение, полученное через браузер.
+        // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
+        result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+        YMap.geoObjects.add(result.geoObjects);
+        var myCoords = result.geoObjects.get(0).geometry.getCoordinates();
+        var string = myCoords[0]+'-'+myCoords[1];
+        string = string.replace(/\./g,'_');
+        $('#list_view').load('showNearestRoutes/'+string);
+    });
 }

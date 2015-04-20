@@ -5,9 +5,9 @@
 
 <dl class="sub-nav">
 	<!--dt>Фильтр:</dt-->
-	<dd class="active" onclick="show_all_requests_list()"><a href="#">Все</a></dd>
+	<dd onclick="show_all_requests_list()"><a href="#">Все</a></dd>
 	<dd onclick="showMyRoutes()"><a href="#">По пути</a></dd>
-	<dd onclick="showNearestRequests()"><a href="#">Ближайшие</a></dd>
+	<dd class="active" onclick="showNearestRequests()"><a href="#">Ближайшие</a></dd>
 </dl>
 <div class="list_container" id="requests_list">
 <?php
@@ -38,6 +38,7 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
 	</div>
 
 	<hr>
+
 <script>
 	var request_coords = {
 		'point_id': <?php echo $request['request_id'];?>,
@@ -52,6 +53,5 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
 <?php endforeach;?>
 </div>
 <script>
-	clearMap();
 	showMapPoints(YMap, map_points);
 </script>
