@@ -18,7 +18,8 @@
   <link rel="stylesheet" type="text/css" href="<?php echo asset_url(); ?>css/jquery.datetimepicker.css">
 
   <script src="<?php echo asset_url(); ?>js/vendor/modernizr.js"></script>
-
+  <script src="<?php echo asset_url(); ?>js/vendor/jquery.js"></script>
+  
   <!-- Yandex.Maps API -->
   <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
   <script src="<?php echo asset_url(); ?>js/vendor/yandex_map.modules.js"></script>
