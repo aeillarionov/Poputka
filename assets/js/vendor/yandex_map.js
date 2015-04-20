@@ -1,6 +1,7 @@
 ymaps.ready(init);
 var YMap;
 var startPlacemark, finishPlacemark, searchPlacemark;
+var multiRoute;
 var pathPolyline;
 var setAsStartPlacemark;
 var setAsFinishPlacemark;
@@ -8,6 +9,9 @@ var deleteSearchPlacemark;
 var searchControl;
 var startPlacemarks = [];
 var finishPlacemarks = [];
+
+var is_finish_placemark = false;
+
 function init(){   
     YMap = new ymaps.Map("ymap", {
         center: [55.76, 37.64],
@@ -67,89 +71,95 @@ function init(){
 		var results = searchControl.getResultsArray(),
             selected = e.get('index'),
             point = results[selected].geometry.getCoordinates();
-        //console.log(point);
-        $('#startPlacemarkValue').data('lat', point[0]).data('lon',point[1]);
-        $('#startPlacemarkValue').val(results[selected].properties.get('name'));
         
-        removeStartPlacemark();
-		startPlacemark = createStartPlacemark(point);
-		YMap.geoObjects.add(startPlacemark);
-		createPolyline(startPlacemark, finishPlacemark);
-		// Слушаем событие окончания перетаскивания на метке.
-        startPlacemark.events.add('dragend', function () {
-            // При изменении положения меток меняем линию
-            createPolyline(startPlacemark, finishPlacemark);
-        });
-       
-        //console.log(results[selected].properties.get('name'));
+        //Checks is finish placemark is searching from the input form 
+        if (is_finish_placemark) {
+        	removeFinishPlacemark();
+        	createFinishPlacemark(point);
+        	YMap.geoObjects.add(finishPlacemark);
+        	is_finish_placemark = false;
+        	$("#destinationCoord").val(point[0]+","+point[1]);
+        	$('#finishPlacemarkValue').val(results[selected].properties.get('name'));
+
+
+        } else {
+        	removeStartPlacemark();
+        	createStartPlacemark(point);
+        	YMap.geoObjects.add(startPlacemark);
+        	$("#departureCoord").val(point[0]+","+point[1]);
+        	$('#startPlacemarkValue').val(results[selected].properties.get('name'));
+
+        }
+
+        build_route(startPlacemark, finishPlacemark );  
 	});
 
 	// Слушаем клик на карте
 	YMap.events.add('click', function (e) {
-	    var coords = e.get('coords');
+	    var cl_coords = e.get('coords');
+	    //Delete previous search placemark
+	    deleteSearchPlacemark();
 
-	    //Если добавлены обе метки
-    	if (startPlacemark && finishPlacemark) {
-    		alert("Вы уже добавили начальную и конечную метки. Для изменения положения просто перетащите их ");
-    	}
-    	else {
-	    	//Если начальная метка создана, а конечная нет - создаем конечную
-		    if (startPlacemark && !finishPlacemark) {
+	    searchPlacemark = new ymaps.Placemark(cl_coords, {
+	    	balloonContentHeader: 'Добавить точку к маршруту',
+			balloonContentBody: [
+				'<p style="margin-bottom:5px;"><a class="balloonStartButton" onClick="setAsStartPlacemark()">',
+				'<i class="fa fa-flag-o"></i>',
+				'&nbsp; Отсюда</a>',
+				'&nbsp;&nbsp; или  &nbsp;&nbsp; ',
+				'<a class="balloonFinishButton" onClick="setAsFinishPlacemark()">',
+				'<i class="fa fa-flag-checkered"></i>',
+				'&nbsp; Сюда</a></p>'
+				].join(''),
+			balloonContentFooter: [
+				'<a class="balloonDeleteButton deletePlacemark" onClick="deleteSearchPlacemark()">',
+				'<i class="fa fa-trash-o"></i> &nbsp; Удалить метку</a>'
+	        ].join('')
+		});
+		//console.log(searchPlacemark);
+		YMap.geoObjects.add(searchPlacemark);
+		searchPlacemark.balloon.open();
 
-		        finishPlacemark = createFinishPlacemark(coords);
-		        document.getElementById('destinationCoord').value = coords;
-		    	YMap.geoObjects.add(finishPlacemark);
-
-		    	createPolyline(startPlacemark, finishPlacemark);
-
-		        // Слушаем событие окончания перетаскивания на метке.
-		        finishPlacemark.events.add('dragend', function () {
-		            // При изменении положения меток меняем линию
-
-		            createPolyline(startPlacemark, finishPlacemark);
-		        });
-		    }
-
-		    //Проверяем наличие начальной метки
-		    else if (!startPlacemark && !finishPlacemark){
-
-				// Если ни одна метка не создана –  создаем начальную
-		        startPlacemark = createStartPlacemark(coords);
-		        document.getElementById('departureCoord').value = coords;
-		        YMap.geoObjects.add(startPlacemark);
-
-		        // Слушаем событие окончания перетаскивания на метке.
-		        startPlacemark.events.add('dragend', function () {
-		            // При изменении положения меток меняем линию
-		            createPolyline(startPlacemark, finishPlacemark);
-		        });		    
-		    }
-		    else{
-		    	//alert("ERROR: Нарушение порядка меток");
-		    	//Добавлена только конечная метка - создаем начальную
-		    	startPlacemark = createStartPlacemark(coords);
-		    	document.getElementById('departureCoord').value = coords;
-		    	YMap.geoObjects.add(startPlacemark);
-
-		    	createPolyline(startPlacemark, finishPlacemark);
-
-		    	// Слушаем событие окончания перетаскивания на метке.
-		        startPlacemark.events.add('dragend', function () {
-		            // При изменении положения меток меняем линию
-		            createPolyline(startPlacemark, finishPlacemark);
-		        });
-		    }
-		}	    
 	});
+
+	//Reverse geocoding by placemark and updating information in form
+	function getAddress(placemark){
+		var placemark_coord = placemark.geometry.getCoordinates();
+		ymaps.geocode(placemark_coord).then(function (res) {
+			var firstGeoObject = res.geoObjects.get(0);
+
+			//Detect what placemark is geocoding
+			if (placemark_coord==startPlacemark.geometry.getCoordinates()){
+				$("#departureCoord").val(placemark_coord[0]+","+placemark_coord[1]);
+        		$('#startPlacemarkValue').val( firstGeoObject.properties.get('name') );
+
+        		startPlacemark.properties.set({
+        			balloonContentBody: firstGeoObject.properties.get('text')
+        		})
+			} else if ( placemark_coord==finishPlacemark.geometry.getCoordinates() ) {
+				$("#destinationCoord").val(placemark_coord[0]+","+placemark_coord[1]);
+        		$('#finishPlacemarkValue').val( firstGeoObject.properties.get('name') );
+
+        		finishPlacemark.properties.set({
+        			balloonContentBody: firstGeoObject.properties.get('text')
+        		})
+			} else {
+				console.log("Invalid placemark parameter");
+				console.log(placemark);
+			}
+
+		});
+	}
 
 	// Создание начальной метки
     function createStartPlacemark(coords) {
-        return new ymaps.Placemark(coords, {
+    	startPlacemark = new ymaps.Placemark(coords, {
         	/*hintContent: "Начальная метка",*/
-			iconContent: 'Забрать тут',
-			balloonContentHeader: "Начальная метка",
-        	balloonContentBody: [
-            '<a class="deletePlacemark" onClick="removeAllPlacemarks()">Удалить</a>'
+			iconContent: 'Отсюда',
+			balloonContentHeader: "Начальная точка",
+			balloonContentBody: 'Адрес',
+        	balloonContentFooter: [
+            '<a class="deletePlacemark" onClick="removeStartPlacemark()"><i class="fa fa-trash-o"></i> &nbsp;Удалить точку</a>'
         ].join('')
         }, {
             preset: 'islands#greenStretchyIcon',
@@ -157,54 +167,68 @@ function init(){
             draggable: true
             
         });
+
+    	 getAddress(startPlacemark);
+
+    	// Слушаем событие окончания перетаскивания на метке.
+        startPlacemark.events.add('dragend', function () {
+            //Get placemark address after drag and set placemark values in form
+            getAddress(startPlacemark);
+            // При изменении положения меток меняем линию
+            build_route(startPlacemark, finishPlacemark );
+        });
+
+        build_route(startPlacemark, finishPlacemark );
+
     }
 
 	// Создание конечной метки
     function createFinishPlacemark(coords) {
-        return new ymaps.Placemark(coords, {
-            iconContent: 'Подвезти сюда',
-            balloonContentHeader: "Конечная метка",
-        	balloonContentBody: [
-            '<a class="deletePlacemark" onClick="removeFinishPlacemark()">Удалить</a>'
+
+        finishPlacemark = new ymaps.Placemark(coords, {
+            iconContent: 'Сюда',
+            balloonContentHeader: "Конечная точка",
+            balloonContentBody: 'Адрес',
+        	balloonContentFooter: [
+            '<a class="deletePlacemark" onClick="removeFinishPlacemark()"><i class="fa fa-trash-o"></i> &nbsp;Удалить точку</a>'
         ].join('')
         }, {
             preset: 'islands#redStretchyIcon',
             draggable: true
         });
+
+     	getAddress(finishPlacemark);
+
+    	// Слушаем событие окончания перетаскивания на метке.
+        finishPlacemark.events.add('dragend', function () {
+            //Get placemark address after drag and set placemark values in form
+            getAddress(finishPlacemark);
+            // При изменении положения меток меняем линию
+            build_route(startPlacemark, finishPlacemark );
+        });
+
+        build_route(startPlacemark, finishPlacemark );
+
     }
 
     setAsStartPlacemark = function(){
     	if (searchPlacemark) {
     		var searchPlacemarkCoords = searchPlacemark.geometry.getCoordinates();
-    		document.getElementById('departureCoord').value = searchPlacemarkCoords;
     		YMap.geoObjects.remove(searchPlacemark);
     		removeStartPlacemark();
-    		startPlacemark = createStartPlacemark(searchPlacemarkCoords);
+    		YMap.geoObjects.remove(startPlacemark);
+    		createStartPlacemark(searchPlacemarkCoords);
     		YMap.geoObjects.add(startPlacemark);
-			createPolyline(startPlacemark, finishPlacemark);
-			// Слушаем событие окончания перетаскивания на метке.
-	        startPlacemark.events.add('dragend', function () {
-	            // При изменении положения меток меняем линию
-	            createPolyline(startPlacemark, finishPlacemark);
-	        });
 		}
     }
 
     setAsFinishPlacemark = function(){
     	if (searchPlacemark) {
     		var searchPlacemarkCoords = searchPlacemark.geometry.getCoordinates();
-    		document.getElementById('destinationCoord').value = searchPlacemarkCoords;
     		YMap.geoObjects.remove(searchPlacemark);
     		removeFinishPlacemark();
-    		finishPlacemark = createFinishPlacemark(searchPlacemarkCoords);
+    		createFinishPlacemark(searchPlacemarkCoords);
     		YMap.geoObjects.add(finishPlacemark);
-    		createPolyline(startPlacemark, finishPlacemark);
-    		// Слушаем событие окончания перетаскивания на метке.
-	        finishPlacemark.events.add('dragend', function () {
-	            // При изменении положения меток меняем линию
-	            createPolyline(startPlacemark, finishPlacemark);
-	        });
-			
 		}
     }
 
@@ -213,7 +237,10 @@ function init(){
 		searchPlacemark = null;
     }
 
-    // Создание/обновление ломаной линии
+    /***
+		DEPRECATED with build_route function
+		Creates / updates dashed polyline of the route 
+    ***/
     function createPolyline(start_coords, finish_coords) {
 
     	YMap.geoObjects.remove(pathPolyline);
@@ -240,10 +267,92 @@ function init(){
 	            strokeStyle: 'shortdash'
 	        });
 
-	    	console.log(pathPolyline);
 	        YMap.geoObjects.add(pathPolyline);
 	    }
     }
+
+
+    //Построение маршрута по двум точкам
+    function build_route(start_placemark, finish_placemark){
+
+    	if (start_placemark && finish_placemark){
+
+    		
+    		//Remove previous multiroute from the map
+    		YMap.geoObjects.remove(multiRoute);
+
+	    	multiRoute = new ymaps.multiRouter.MultiRoute({
+		        // Описание опорных точек мультимаршрута.
+		        referencePoints: [
+		            start_placemark,
+		            finish_placemark
+		        ],
+		        // Параметры маршрутизации.
+		        params: {
+		            // Ограничение на максимальное количество маршрутов, возвращаемое маршрутизатором.
+		            results: 1
+		        }
+		    }, {
+		    	wayPointStart: startPlacemark,
+		    	// Внешний вид линии маршрута.
+		        routeStrokeWidth: 2,
+		        routeStrokeColor: "#000088",
+		        routeActiveStrokeWidth: 6,
+		        routeActiveStrokeColor: "#000088",
+		        // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
+		        boundsAutoApply: true
+		    });
+
+		    YMap.geoObjects.add(multiRoute);
+
+		    // Подписываемся на события модели мультимаршрута.
+		    multiRoute.model.events.once("requestsuccess", function () {
+		    	var first_route_point = multiRoute.getWayPoints().get(0);
+	            var last_route_point = multiRoute.getWayPoints().get(1);
+	            //Hide first and last points from map
+	            first_route_point.options.set('visible', false);
+	            last_route_point.options.set('visible', false);
+	            // Создаем балун у метки второй точки.
+	            //ymaps.geoObject.addon.balloon.get(last_route_point);
+	            /*last_route_point.options.set({
+	                preset: "islands#grayStretchyIcon",
+	                iconContentLayout: ymaps.templateLayoutFactory.createClass(
+	                    '<span style="color: red;">Я</span>ндекс'
+	                ),
+	                balloonContentLayout: ymaps.templateLayoutFactory.createClass(
+	                    '{{ properties.address|raw }}'
+	                )
+	            });*/
+	        });
+
+		    /*
+			multiRoute.model.events
+			    .add("requestsuccess", function (event) {
+			        var way_points = event.get("target").getReferencePoints();
+			        console.log(way_points);
+			        var last_point = way_points.getLength() - 1;
+			        //Hide default multiroute waypoints
+			        way_points.get(0).options.set('visible', false);
+		    		way_points.get(last_point).options.set('visible', false);
+			    })
+			    .add("requestfail", function (event) {
+			        console.log("Ошибка: " + event.get("error").message);
+			    });
+			*/
+	    	/*var way_points = multiRoute.getWayPoints();
+	    	var last_point = way_points.getLength() - 1; 
+	    	//Hide first and last points from map
+	    	console.log(way_points);
+	    	console.log(last_point);
+	    	console.log(way_points.get(0));
+		    way_points.get(0).options.set('visible', false);
+		    way_points.get(last_point).options.set('visible', false);*/
+
+		    
+
+		}
+    }
+
 }
 
 // Удаление всех меток
@@ -259,6 +368,12 @@ var removeAllPlacemarks = function() {
 function removeStartPlacemark() {
 	YMap.geoObjects.remove(startPlacemark);
 	startPlacemark = null;
+
+	//Clear form inputs
+	$("#departureCoord").val("");
+	$('#startPlacemarkValue').val("");
+
+
 	YMap.geoObjects.remove(pathPolyline);
 	pathPolyline = null;
 }
@@ -266,35 +381,69 @@ function removeStartPlacemark() {
 function removeFinishPlacemark() {
 	YMap.geoObjects.remove(finishPlacemark);
 	finishPlacemark = null;
+
+	//Clear form inputs
+	$("#destinationCoord").val("");
+	$('#finishPlacemarkValue').val("");
+
 	YMap.geoObjects.remove(pathPolyline);
 	pathPolyline = null;
 }
 
-//Поиск метки по значению, введенному в форме
+//Поиск начальной метки по значению, введенному в форме
 function searchStartPlacemarkByForm(){
-	var query = jQuery("#startPlacemarkValue").val();
-	
-	//удалить предыдущую метку с карты
-	deleteSearchPlacemark();
-	searchControl.search(query);
+	is_finish_placemark = false;
+	var query = jQuery("#startPlacemarkValue").val();	
+	searchAddress(query);
+}
+
+//Поиск конечной метки по значению, введенному в форме
+function searchFinishPlacemarkByForm(){
+	is_finish_placemark = true;
+	var query = jQuery("#finishPlacemarkValue").val();	
+	searchAddress(query);
+}
+
+/***
+	Form input information handler 
+	and correspondance to the Yandex Map
+	Requires jQuery
+**/
+$( document ).ready(function() {
+	//Search starts with the mouse focused on the form and Enter key pressed
+	$("#startPlacemarkValue").keyup(function (e) {
+	    if(e.which == 13) {
+	    	is_finish_placemark = false;
+	        searchAddress( $("#startPlacemarkValue").val() );    
+	    } 
+	});
+
+	$("#finishPlacemarkValue").keyup(function (e) {
+	    if(e.which == 13) {
+	    	is_finish_placemark = true;
+	        searchAddress( $("#finishPlacemarkValue").val() );    
+	    } 
+	});
+
+	$(".submit_btn").click(function(){
+		$(this).closest('form').submit();
+	});  
+
+});   
+// + searchStartPlacemarkByForm() from yandex_map.js
+
+
+function searchAddress(query_address){
+	searchControl.search(query_address);
 	searchControl.getLayout().then(function (layout) {
         // Открываем панель.
         layout.openPanel();
         layout.openPopup();
     });
-	/*.then(function(a) {
-	    // geoObjectsArr - это массив геообъектов, содержащий результаты запроса.
-	    //var geoObjectsArray = searchControl.getResultsArray();
-	});;
-	
-
-
-	/*searchControl.events.add('load', function (event) {
-        if (!event.get('skip') && searchControl.getResultsCount()) {
-            searchControl.showResult(0);
-        }
-    });*/
 }
+
+
+
 function showMapPoints (map, points){
 	points.forEach(function(item, i, arr){
 		var startPoint = new ymaps.Placemark([item.dep_lat, item.dep_lon],

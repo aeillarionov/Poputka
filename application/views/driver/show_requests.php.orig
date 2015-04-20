@@ -56,9 +56,9 @@
                     <div class="row"> <div class="small-12 columns">
                       <dl class="sub-nav">
                         <!--dt>Фильтр:</dt-->
-                        <dd class="active" onclick="show_all_requests_list()"><a href="#">Все</a></dd>
+                        <dd class="active"><a href="#">Все</a></dd>
                         <dd onclick="showMyRoutes()"><a href="#">По пути</a></dd>
-                        <dd onclick="showNearestRequests()"><a href="#">Ближайшие</a></dd>
+                        <dd><a href="#">Ближайшие</a></dd>
                       </dl>
                       <div class="list_container" id="requests_list">
 <?php
@@ -71,7 +71,11 @@
       $mins = $to_time_arr['minutes'] < 10 ? '0'.$to_time_arr['minutes'] : $to_time_arr['minutes'];
       $time_str .= $to_time_arr['hours'].':'.$mins;
 ?>
+<<<<<<< HEAD
+	<div class="row list_item hvr-left" id="list_item_<?php echo $request['request_id'];?>" onmouseover="highlightMark(this)" onmouseout="defaultMark(this)">
+=======
 	<div class="row list_item" id="list_item_<?php echo $request['request_id'];?>" onmouseover="highlightMark(this)" onmouseout="defaultMark(this)" onclick="showFinishMark(this)">
+>>>>>>> c296a3ec7d8ed80370511c2d95c661b9da58d39f
 	  <!-- User photo -->
 	  <div class="small-3 columns" style="padding-right:0;">
   		<img src="<?php echo $request['pic_url'];?>">
@@ -123,9 +127,9 @@
         var th_show_more = $(this).closest(".list_item").find(".show_more");
         if ( th_show_more.is(':visible') ){
           $(".show_more").hide();
-          th_show_more.hide("fast");
+          th_show_more.slideUp("fast");
         } else{
-          $(".show_more").hide("fast");
+          $(".show_more").slideUp("fast");
           th_show_more.slideDown("fast").css("display", "inline");
         }
         //$(".show_more").hide();
@@ -272,7 +276,7 @@
                       <!-- Submit -->
                       <div class="row collapse">
                         <div class="small-12 columns text-center">
-                          <a id="submit_pick_request" class="expand button success submit_btn"> <i class="fa fa-car"></i> Добавить поездку </a>
+                          <button id="submit_pick_request" class="expand button success"> <i class="fa fa-car"></i> Добавить поездку </button>
                         </div>
                       </div>
 

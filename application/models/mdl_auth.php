@@ -21,12 +21,20 @@ class Mdl_auth extends CI_Model {
 			$user = array (
 				'name' => $userInfo['first_name'],
 				'surename' => $userInfo['last_name'],
-				'pic_url' => $userInfo['photo_max']
+				'pic_url' => $userInfo['photo_max'],
+				'sex' => $users_info['sex'],
+				'bdate' => $users_info['bdate'],
+				'city' => $users_info['city'],
 			);
+
+			$this->db->trans_start();
 			$this->db->insert('users_info', $user);
+			$insert_id = $this->db->insert_id();
+   			$this->db->trans_complete();
+
 			$user_auth = array (
 				'social_id' => $userInfo['uid'],
-				'db_id' => $this->db->insert_id()
+				'db_id' => $insert_id
 			);
 			$this->db->insert('users_auth', $user_auth);
 			$_SESSION['user_id'] = $user_auth['db_id'];

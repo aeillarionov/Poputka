@@ -23,7 +23,7 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 				if (isset($token['access_token'])) {
 					$params = array(
 						'uids'         => $token['user_id'],
-						'fields'       => 'uid,first_name,last_name,screen_name,sex,bdate,photo_max',
+						'fields'       => 'uid,first_name,last_name,sex,bdate,city,photo_max',
 						'access_token' => $token['access_token']
 					);
 				}
