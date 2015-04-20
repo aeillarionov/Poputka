@@ -71,6 +71,7 @@
       $mins = $to_time_arr['minutes'] < 10 ? '0'.$to_time_arr['minutes'] : $to_time_arr['minutes'];
       $time_str .= $to_time_arr['hours'].':'.$mins;
 ?>
+  <div class="row list_item hvr-left" id="list_item_<?php echo $request['request_id'];?>" onmouseover="highlightMark(this)" onmouseout="defaultMark(this)" onclick="showFinishMark(this)">
 	  <!-- User photo -->
 	  <div class="small-3 columns" style="padding-right:0;">
   		<img src="<?php echo $request['pic_url'];?>">
@@ -88,7 +89,7 @@
 
     <!-- Show more info container -->
     <div hidden class="small-12 columns show_more text-center">
-      <h6>&nbsp;<i class="fa fa-male"></i>&nbsp;x <?php echo $request['passengers'];?> </h6>
+      <h6>&nbsp;<i class="fa fa-male"></i>&nbsp;x <?php echo $request['male_pass']+$request['female_pass'];?> </h6>
       <h6>&nbsp;<i class="fa fa-comment">&nbsp;</i><?php echo $request['extra'];?> </h6>
     </div>
 	</div>

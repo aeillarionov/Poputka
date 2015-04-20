@@ -24,7 +24,7 @@ class Mdl_auth extends CI_Model {
 				'pic_url' => $userInfo['photo_max'],
 				'sex' => $users_info['sex'],
 				'bdate' => $users_info['bdate'],
-				'city' => $users_info['city'],
+				'city' => $users_info['city']
 			);
 
 			$this->db->trans_start();

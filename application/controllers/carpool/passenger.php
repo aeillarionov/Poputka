@@ -62,7 +62,8 @@ class Passenger extends CI_Controller {
 				'from_time' => strtotime(str_replace('/', '-', $_POST['startDate']).' '.$_POST['startTime']),
 				'to_time' => strtotime(str_replace('/', '-', $_POST['startDate']).' '.$_POST['finishTime']),
 				'regular' => $_POST['frequencySwitchGroup'] ? 1 : 0,
-				'passengers' => $_POST['male_quantity'] + $_POST['female_quantity'],
+				'male_pass' => $_POST['male_quantity'],
+				'female_pass' => $_POST['female_quantity'],
 				'extra' => $_POST['extra'],
 			);
 			$status = $this->mdl_request->add_request($geo_data, $request_data);
