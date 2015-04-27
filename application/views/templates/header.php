@@ -26,8 +26,9 @@
   <script src="<?php echo asset_url(); ?>js/vendor/yandex_map.js"></script>
   <script src="<?php echo asset_url(); ?>js/vendor/geolocation_service.js"></script>
   
-  <!-- Ajax functions -->
+  <!-- Handler functions -->
   <script src="<?php echo asset_url(); ?>js/ajax_functions.js"></script>
+  <script src="<?php echo asset_url(); ?>js/handlers.js"></script>
 
 </head>
 <body>

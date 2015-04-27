@@ -6,6 +6,11 @@
 		}
 		public function show_all(){
 			$i=0;
+			$now = time() - 900;
+			$this->db->where('to_time >', $now);
+			$this->db->where('to_time <', $now + 86400);
+			$this->db->or_where('regular !=', 0);
+			$this->db->order_by('from_time', 'desc');
 			$this->db->order_by('request_id', 'desc');
 			$query = $this->db->get('requests');
 			$req_arr = $query->result_array();
@@ -93,7 +98,8 @@
 					$res_arr[$i]['from_time'] = $res['from_time'];
 					$res_arr[$i]['to_time'] = $res['to_time'];
 					$res_arr[$i]['regular'] = $res['regular'];
-					$res_arr[$i]['passengers'] = $res['passengers'];
+					$res_arr[$i]['male_pass'] = $res['male_pass'];
+					$res_arr[$i]['female_pass'] = $res['female_pass'];
 					$res_arr[$i]['extra'] = $res['extra'];
 					$this->db->where('user_id', $owner_id);
 					$query = $this->db->get('users_info');

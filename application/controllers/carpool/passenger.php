@@ -26,6 +26,11 @@ class Passenger extends CI_Controller {
 			$this->load->view('templates/footer');
 		}
 	}
+	public function showOnroad($request_id){
+		$data['routes'] = $this->mdl_route->show_all();
+		$data['request_id'] = $request_id;
+		$this->load->view('passenger/onroad', $data);
+	}
 	public function show_all_routes_list(){
 			if(isset($_SESSION['user_id'])/* && $_SESSION['driver']==1*/){
 				$data['routes'] = $this->mdl_route->show_all();
@@ -54,14 +59,16 @@ class Passenger extends CI_Controller {
 			$geo_data = array (
 				'dep_lat' => 0 + $dep_coord[0],
 				'dep_lon' => 0 + $dep_coord[1],
+				'dep_addr' => $_POST['dep_addr'],
 				'des_lat' => 0 + $des_coord[0],
 				'des_lon' => 0 + $des_coord[1],
+				'des_addr' => $_POST['des_addr'],
 			);
 			$request_data = array (
 				'owner_id' => $_SESSION['user_id'],
 				'from_time' => strtotime(str_replace('/', '-', $_POST['startDate']).' '.$_POST['startTime']),
 				'to_time' => strtotime(str_replace('/', '-', $_POST['startDate']).' '.$_POST['finishTime']),
-				'regular' => $_POST['frequencySwitchGroup'] ? 1 : 0,
+				'regular' => $_POST['regularDays'],
 				'male_pass' => $_POST['male_quantity'],
 				'female_pass' => $_POST['female_quantity'],
 				'extra' => $_POST['extra'],

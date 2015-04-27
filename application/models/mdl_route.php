@@ -6,6 +6,11 @@
 		}
 		public function show_all(){
 			$i=0;
+			$now = time() - 900;
+			$this->db->where('to_time >', $now);
+			$this->db->where('to_time <', $now + 86400);
+			$this->db->or_where('regular !=', 0);
+			$this->db->order_by('from_time', 'desc');
 			$this->db->order_by('route_id', 'desc');
 			$query = $this->db->get('routes');
 			$req_arr = $query->result_array();

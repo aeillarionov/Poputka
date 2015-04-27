@@ -1,4 +1,4 @@
-<?php /*ALTER TABLE pptk_users_auth AUTO_INCREMENT 1 ALTER TABLE pptk_users_info AUTO_INCREMENT 1*/
+<?php /*ALTER TABLE pptk_users_auth AUTO_INCREMENT 1 ALTER TABLE pptk_users_info AUTO_INCREMENT 1 ALTER TABLE pptk_routes AUTO_INCREMENT 1*/
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 	class Driver extends CI_Controller {
 		public function __construct(){
@@ -57,6 +57,11 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 				$this->load->view('driver/my_routes', $data);
 			}
 		}
+		public function showOnroad($route_id){
+			$data['requests'] = $this->mdl_request->show_all();
+			$data['route_id'] = $route_id;
+			$this->load->view('driver/onroad', $data);
+		}
 		public function showNearestRequests($string){
 			if(isset($_SESSION['user_id'])){
 				$coords_arr = explode('-', $string);
@@ -84,14 +89,16 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 				$geo_data = array (
 					'dep_lat' => 0 + $dep_coord[0],
 					'dep_lon' => 0 + $dep_coord[1],
+					'dep_addr' => $_POST['dep_addr'],
 					'des_lat' => 0 + $des_coord[0],
 					'des_lon' => 0 + $des_coord[1],
+					'des_addr' => $_POST['des_addr'],
 				);
 				$route_data = array (
 					'owner_id' => $_SESSION['user_id'],
 					'from_time' => strtotime(str_replace('/', '-', $_POST['startDate']).' '.$_POST['startTime']),
 					'to_time' => strtotime(str_replace('/', '-', $_POST['startDate']).' '.$_POST['finishTime']),
-					'regular' => $_POST['frequencySwitchGroup'] ? 1 : 0,
+					'regular' => $_POST['regularDays'],
 					'spots' => $_POST['passangers_quantity'],
 					'extra' => $_POST['extra'],
 				);

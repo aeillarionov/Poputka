@@ -70,23 +70,60 @@ $time_str = $from_time_arr['hours'].':'.$mins.' - ';
 $to_time_arr = getdate($route['to_time']);
 $mins = $to_time_arr['minutes'] < 10 ? '0'.$to_time_arr['minutes'] : $to_time_arr['minutes'];
 $time_str .= $to_time_arr['hours'].':'.$mins;
+$regular = $route['regular'];
+      if($regular == 0){
+      	$days_str = 'Сегодня';
+      } else {
+      	$regul_arr = explode(',', $regular);
+      	$days_str = 'Регулярно |';
+      	foreach($regul_arr as $day):
+      		switch($day){
+      			case 1:
+      				$days_str .= ' Пн |';
+      				break;
+      			case 2:
+      				$days_str .= ' Вт |';
+      				break;
+      			case 3:
+      				$days_str .= ' Ср |';
+      				break;
+      			case 4:
+      				$days_str .= ' Чт |';
+      				break;
+      			case 5:
+      				$days_str .= ' Пт |';
+      				break;
+      			case 6:
+      				$days_str .= ' Сб |';
+      				break;
+      			case 7:
+      				$days_str .= ' Вс |';
+      				break;
+      		}
+      	endforeach;
+      	$days_str .= '<br><br>';
+      }
 ?>
-	<div class="row list_item" id="list_item_<?php echo $route['route_id'];?>" onmouseover="highlightMark(this)" onmouseout="defaultMark(this)" onclick="showFinishMark(this)">
+	<div class="row list_item hvr-left" id="list_item_<?php echo $route['route_id'];?>" onmouseover="highlightMark(this)" onmouseout="defaultMark(this)" onclick="showFinishMark(this)">
 	  <!-- User photo -->
 	  <div class="small-3 columns" style="padding-right:0;">
 		<img src="<?php echo $route['pic_url']?>">
 	  </div>
 	  <!-- List item info -->
 	  <div class="small-9 columns">
-		<h6> <i class="fa fa-flag-o"></i>&nbsp; <?php echo $route['dep_lat'].','.$route['dep_lon'];?> </h6>
-		<h6> <i class="fa fa-flag-checkered"></i>&nbsp; <?php echo $route['des_lat'].','.$route['des_lon'];?> </h6>
-		<h6> <?php echo 'Доп. инфо: '.$route['extra'];?> </h6>
+		<h6> <i class="fa fa-flag-o"></i>&nbsp; <?php echo $route['dep_addr'];?> </h6>
+		<h6> <i class="fa fa-flag-checkered"></i>&nbsp; <?php echo $route['des_addr'];?> </h6>
 	  </div>
 	  <div class="small-12 columns">
-		<h6> Сегодня &nbsp;<i class="fa fa-clock-o"></i> <?php echo $time_str;?> &nbsp; | &nbsp; 
-		  <a href="#"> Подробнее </a>
+		<h6> <?php echo $days_str;?> &nbsp;<i class="fa fa-clock-o"></i> <?php echo $time_str;?> &nbsp; | &nbsp; 
+		  <a class="show_more_btn"> Подробнее </a>
 		</h6>
 	  </div>
+	  <!-- Show more info container -->
+    <div hidden class="small-12 columns show_more text-center">
+      <h6>&nbsp;<i class="fa fa-male"></i>&nbsp;x <?php echo $route['spots'];?> </h6>
+      <h6>&nbsp;<i class="fa fa-comment">&nbsp;</i><?php echo $route['extra'];?> </h6>
+    </div>
 	</div>
 
 	<hr>
@@ -106,6 +143,28 @@ $time_str .= $to_time_arr['hours'].':'.$mins;
 endforeach;
 }
 ?>
+
+    <script src="../../assets/js/vendor/jquery.js"></script>
+    <script type="text/javascript">
+      /***
+        Show and hide extra info about the route
+        if one is clicked, the other hides
+        Requires jQuery
+      ***/
+      jQuery(".show_more_btn").click(function(){
+        var th_show_more = $(this).closest(".list_item").find(".show_more");
+        if ( th_show_more.is(':visible') ){
+          $(".show_more").hide();
+          th_show_more.hide("fast");
+        } else{
+          $(".show_more").hide("fast");
+          th_show_more.slideDown("fast").css("display", "inline");
+        }
+        //$(".show_more").hide();
+        //$(this).closest(".list_item").find(".show_more").slideToggle("fast").css("display", "inline");
+      });
+    </script>
+
                       </div>
                     </div> </div>
                   </div>
@@ -114,7 +173,7 @@ endforeach;
                   <!-- Add Trip Tab -->
                   <div class="content <?php if($mode==1) echo 'active';?>" id="add_trip">
                     <h5><i class="fa fa-road"></i>&nbsp;&nbsp;Данные о маршруте </h5>
-                    <form action="add_request" method="post">
+                    <form action="add_request" method="post" onsubmit="handleRegular()">
                       <!--fieldset>
                         <legend>Данные о поездке</legend-->
                         <!-- Start point -->
@@ -124,7 +183,7 @@ endforeach;
                             <span class="prefix">Из:</span>
                           </div>
                           <div class="small-6 large-8 columns">
-                            <input id="startPlacemarkValue" type="text" placeholder="Откуда забрать">
+                            <input id="startPlacemarkValue" type="text" placeholder="Откуда забрать" name="dep_addr">
                             <input type="hidden" name="departureCoord" id="departureCoord">
                             <!--small class="error">Необходимо указать начальную точку</small-->
                           </div>
@@ -139,7 +198,7 @@ endforeach;
                             <span class="prefix">В:</span>
                           </div>
                           <div class="small-6 large-8 columns">
-                            <input id="finishPlacemarkValue" type="text" placeholder="Куда довезти">
+                            <input id="finishPlacemarkValue" type="text" placeholder="Куда довезти" name="des_addr">
                             <input type="hidden" name="destinationCoord" id="destinationCoord">
                           </div>
                           <div class="small-3 large-2 columns">
@@ -197,14 +256,15 @@ endforeach;
                         <div class="small-12 columns text-center"> 
                           <!-- Radius Button Group -->
                           <ul class="button-group radius even-7 ">
-                            <li><a href="#" class="button tiny">Пн</a></li>
-                            <li><a href="#" class="button tiny">Вт</a></li>
-                            <li><a href="#" class="button tiny">Ср</a></li>
-                            <li><a href="#" class="button tiny">Чт</a></li>
-                            <li><a href="#" class="button tiny">Пт</a></li>
-                            <li><a href="#" class="button tiny">Сб</a></li>
-                            <li><a href="#" class="button tiny">Вс</a></li>
+                            <li><a id="day1" class="button tiny" onclick="handleDays(this)">Пн</a></li>
+                            <li><a id="day2" class="button tiny" onclick="handleDays(this)">Вт</a></li>
+                            <li><a id="day3" class="button tiny" onclick="handleDays(this)">Ср</a></li>
+                            <li><a id="day4" class="button tiny" onclick="handleDays(this)">Чт</a></li>
+                            <li><a id="day5" class="button tiny" onclick="handleDays(this)">Пт</a></li>
+                            <li><a id="day6" class="button tiny" onclick="handleDays(this)">Сб</a></li>
+                            <li><a id="day7" class="button tiny" onclick="handleDays(this)">Вс</a></li>
                           </ul>
+                          <input type="hidden" name="regularDays" id="regularDays" value="0">
                         </div>
                       </div>
 
