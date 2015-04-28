@@ -131,6 +131,7 @@
 <!-- Fill the array of map points -->
 <script>
 	var request_coords = {
+		'point_type': 0,
 		'point_id': <?php echo $request['request_id'];?>,
 		'dep_lat': <?php echo $request['dep_lat'];?>,
 		'dep_lon': <?php echo $request['dep_lon'];?>,

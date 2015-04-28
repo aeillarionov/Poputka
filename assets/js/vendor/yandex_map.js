@@ -447,38 +447,42 @@ function searchAddress(query_address){
 
 function showMapPoints (map, points){
 	points.forEach(function(item, i, arr){
+		var img_src = '';
+		if(item.point_type == 0){
+			img_src = "../../assets/img/req_pin.png";
+		} else if(item.point_type == 1) {
+			img_src = "../../assets/img/route_pin.png";
+		}
 		var startPoint = new ymaps.Placemark([item.dep_lat, item.dep_lon],
 		{
 			hintContent: '',
-			iconContent: '<img style="border-radius: 50%" src="'+ item.pic_url +'">',
+			iconContent: '<img style="border-radius: 3px" src="'+ item.pic_url +'">',
 			
 		},{
 			iconLayout: 'default#imageWithContent',
-			iconImageHref: "../../assets/img/map_pin.png",
-			iconImageSize: [40, 40],
-			iconImageOffset: [-20, -40],
-			iconContentOffset: [7, 3],
+			iconImageHref: img_src,
+			iconImageClipRect: [[0, 0], [50, 50]],
+			iconImageSize: [50, 50],
+			iconImageOffset: [-25, -50],
+			iconContentOffset: [21, 7],
 			iconContentSize: [27, 27],
-		}
-		);
+		});
 		var index = item.point_id;
 		startPlacemarks[index] = startPoint;
 		map.geoObjects.add(startPoint);
-		startPoint.events.add('click', function(placemark, e){
+		startPoint.events.add('click', function(placemark, e){ //Событие клика на начальной метке
 			showFinishMarkById(index);
 		});
 		var finishPoint = new ymaps.Placemark([item.des_lat, item.des_lon],
 		{
 			hintContent: '',
-			iconContent: '<img style="border-radius: 50%" src="'+ item.pic_url +'">',
+			//iconContent: '<img style="border-radius: 50%" src="'+ item.pic_url +'">',
 			
 		},{
 			iconLayout: 'default#imageWithContent',
-			iconImageHref: "../../assets/img/map_pin3.png",
+			iconImageHref: "../../assets/img/fin_pin.png",
 			iconImageSize: [40, 40],
-			iconImageOffset: [-20, -40],
-			iconContentOffset: [7, 3],
-			iconContentSize: [27, 27],
+			iconImageOffset: [-25, -40]
 		}
 		);
 		finishPlacemarks[index] = finishPoint;
@@ -491,29 +495,23 @@ function highlightMark(item){
 	var item_id = item.id;
 	var mark_id = +item_id.replace('list_item_', '');
 	var placemark = startPlacemarks[mark_id];
-	placemark.options.set('iconImageSize',[50, 50]);
-	placemark.options.set('iconImageOffset',[-25, -50]);
-	placemark.options.set('iconContentOffset',[12, 7]);
-	var placemark = finishPlacemarks[mark_id];
-	placemark.options.set('iconImageSize',[50, 50]);
-	placemark.options.set('iconImageOffset',[-25, -50]);
-	placemark.options.set('iconContentOffset',[12, 7]);
+	placemark.options.set('iconImageClipRect', [[0, 50], [60, 110]]);
+	placemark.options.set('iconImageSize',[60, 60]);
+	placemark.options.set('iconImageOffset',[-30, -60]);
+	placemark.options.set('iconContentOffset',[28, 11]);
 }
 function defaultMark(item){
 	var item_id = item.id;
 	var mark_id = +item_id.replace('list_item_', '');
 	var placemark = startPlacemarks[mark_id];
-	placemark.options.set('iconImageSize',[40, 40]);
-	placemark.options.set('iconImageOffset',[-20, -40]);
-	placemark.options.set('iconContentOffset',[7, 3]);
-	var placemark = finishPlacemarks[mark_id];
-	placemark.options.set('iconImageSize',[40, 40]);
-	placemark.options.set('iconImageOffset',[-20, -40]);
-	placemark.options.set('iconContentOffset',[7, 3]);
+	placemark.options.set('iconImageClipRect', [[0, 0], [50, 50]]);
+	placemark.options.set('iconImageSize',[50, 50]);
+	placemark.options.set('iconImageOffset',[-25, -50]);
+	placemark.options.set('iconContentOffset',[21, 7]);
 }
 function defaultAllMarks(){
 	startPlacemarks.forEach( function(item, i, arr){
-		item.options.set('iconImageHref', '../../assets/img/map_pin.png');
+		item.options.set('iconImageClipRect', [[0, 0], [50, 50]]);
 	});
 }
 function showFinishMark(item){
@@ -524,7 +522,7 @@ function showFinishMark(item){
 	var finish_placemark = finishPlacemarks[mark_id];
 	YMap.geoObjects.add(finish_placemark);
 	var start_placemark = startPlacemarks[mark_id];
-	start_placemark.options.set('iconImageHref', '../../assets/img/map_pin2.png');
+	//start_placemark.options.set('iconImageHref', '../../assets/img/map_pin2.png');
 	YMap.geoObjects.remove(multiRoute);
 
 	    	multiRoute = new ymaps.multiRouter.MultiRoute({
@@ -577,7 +575,7 @@ function showFinishMarkById(mark_id){
 	var finish_placemark = finishPlacemarks[mark_id];
 	YMap.geoObjects.add(finish_placemark);
 	var start_placemark = startPlacemarks[mark_id];
-	start_placemark.options.set('iconImageHref', '../../assets/img/map_pin2.png');
+	//start_placemark.options.set('iconImageHref', '../../assets/img/map_pin2.png');
 	YMap.geoObjects.remove(multiRoute);
 
 	    	multiRoute = new ymaps.multiRouter.MultiRoute({
@@ -611,17 +609,6 @@ function showFinishMarkById(mark_id){
 	            //Hide first and last points from map
 	            first_route_point.options.set('visible', false);
 	            last_route_point.options.set('visible', false);
-	            // Создаем балун у метки второй точки.
-	            //ymaps.geoObject.addon.balloon.get(last_route_point);
-	            /*last_route_point.options.set({
-	                preset: "islands#grayStretchyIcon",
-	                iconContentLayout: ymaps.templateLayoutFactory.createClass(
-	                    '<span style="color: red;">Я</span>ндекс'
-	                ),
-	                balloonContentLayout: ymaps.templateLayoutFactory.createClass(
-	                    '{{ properties.address|raw }}'
-	                )
-	            });*/
 	        });
 }
 function hideFinishMarks(){
@@ -640,7 +627,7 @@ function showNearestRequests() {
     }).then(function (result) {
         // Синим цветом пометим положение, полученное через браузер.
         // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
-        result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+        result.geoObjects.options.set('preset', 'islands#geolocationIcon');
         YMap.geoObjects.add(result.geoObjects);
         YMap.setCenter(result.geoObjects.get(0).geometry.getCoordinates(), 12);
         var myCoords = result.geoObjects.get(0).geometry.getCoordinates();
@@ -660,7 +647,7 @@ function showNearestRoutes(){
     }).then(function (result) {
         // Синим цветом пометим положение, полученное через браузер.
         // Если браузер не поддерживает эту функциональность, метка не будет добавлена на карту.
-        result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+        result.geoObjects.options.set('preset', 'islands#geolocationIcon');
         YMap.geoObjects.add(result.geoObjects);
         var myCoords = result.geoObjects.get(0).geometry.getCoordinates();
         var string = myCoords[0]+'-'+myCoords[1];
@@ -669,7 +656,7 @@ function showNearestRoutes(){
     });
 }
 
-function showOnroadRequests(route){
+/*function showOnroadRequests(route){
 	clearMap();
 	var rad2deg = 180/Math.PI;
 	var onroad = [];
@@ -850,8 +837,8 @@ function showOnroadRequests(route){
 			);
 			
 		});
-}
-function showOnroadRoutes(request){
+}*/
+/*function showOnroadRoutes(request){
 	clearMap();
 	var rad2deg = 180/Math.PI;
 	var onroad = [];
@@ -1033,4 +1020,211 @@ function showOnroadRoutes(request){
 			setTimeout(function(){showMapPoints(YMap, onroad); showList(onroad);}, 200);
 		}
 	});
+}*/
+function showOnroadRequests(route){
+	clearMap();
+	var onroad = [];
+	var startPoint = new ymaps.Placemark([route['dep_lat'], route['dep_lon']],
+	{
+		hintContent: '',
+		iconContent: '<img style="border-radius: 3px" src="'+ route['pic_url'] +'">',
+		
+	},{
+		iconLayout: 'default#imageWithContent',
+		iconImageHref: '../../assets/img/route_pin.png',
+		iconImageClipRect: [[0, 0], [50, 50]],
+		iconImageSize: [50, 50],
+		iconImageOffset: [-25, -50],
+		iconContentOffset: [21, 7],
+		iconContentSize: [27, 27],
+	});
+	var finishPoint = new ymaps.Placemark([route['des_lat'], route['des_lon']],
+	{
+		iconLayout: 'default#imageWithContent',
+		iconImageHref: "../../assets/img/fin_pin.png",
+		iconImageSize: [40, 40],
+		iconImageOffset: [-25, -40]
+	});
+	YMap.geoObjects.add(startPoint); YMap.geoObjects.add(finishPoint);
+	var multRoute = new ymaps.multiRouter.MultiRoute({
+		// Описание опорных точек мультимаршрута.
+		referencePoints: [
+			startPoint,
+			finishPoint
+		],
+		// Параметры маршрутизации.
+		params: {
+			// Ограничение на максимальное количество маршрутов, возвращаемое маршрутизатором.
+			results: 1
+		}
+	}, {
+		wayPointStart: startPlacemark,
+		// Внешний вид линии маршрута.
+		routeStrokeWidth: 2,
+		routeStrokeColor: "#008800",
+		routeActiveStrokeWidth: 6,
+		routeActiveStrokeColor: "#008800",
+		// Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
+		boundsAutoApply: true
+	});
+	YMap.geoObjects.add(multRoute);
+	multRoute.model.events.once("requestsuccess", function () {
+		var first_route_point = multRoute.getWayPoints().get(0);
+		var last_route_point = multRoute.getWayPoints().get(1);
+		//Hide first and last points from map
+		first_route_point.options.set('visible', false);
+		last_route_point.options.set('visible', false);
+	});
+	map_points.forEach(function(item, i, arr){
+		var startCircle = new ymaps.Circle([[item['dep_lat'], item['dep_lon']], 2100],{},{
+			visible: false
+        });
+		var finishCircle = new ymaps.Circle([[item['des_lat'], item['des_lon']], 2100],{},{
+			visible: false
+        });
+		YMap.geoObjects.add(startCircle); YMap.geoObjects.add(finishCircle);
+		var rt = ymaps.route([[route['dep_lat'], route['dep_lon']], [route['des_lat'], route['des_lon']]]).then(
+			function (res) {
+				var pathsObjects = ymaps.geoQuery(res.getPaths()),
+				edges = [];
+				pathsObjects.each(function (path) {
+					var coordinates = path.geometry.getCoordinates();
+					for (var i = 1, l = coordinates.length; i < l; i++) {
+						edges.push({
+							type: 'LineString',
+							coordinates: [coordinates[i], coordinates[i - 1]]
+						});
+					}
+				});
+				var routeObjects = ymaps.geoQuery(edges)
+					.add(res.getWayPoints())
+					.add(res.getViaPoints())
+					.setOptions('visible', false)
+					.addToMap(YMap),
+					objectsInStartCircle = routeObjects.searchInside(startCircle),
+					objectsInFinishCircle = routeObjects.searchInside(finishCircle);
+				var indexOfStart, indexOfFinish;
+				objectsInStartCircle.search('geometry.type = "LineString"').each(function (s) {
+					indexOfStart = routeObjects.indexOf(s);
+					return false;
+				});
+				objectsInFinishCircle.search('geometry.type = "LineString"').each(function (s) {
+					indexOfFinish = routeObjects.indexOf(s);
+					return false;
+				});
+				if(indexOfStart !== undefined && indexOfFinish !== undefined){
+					if(indexOfStart < indexOfFinish){
+						onroad.push(item);
+					}
+				}
+				if(i + 1 == arr.length){
+					setTimeout(function(){showMapPoints(YMap, onroad); showList(onroad);}, 200);
+				}
+			} //function(res) end
+		); //route end
+	}); //end foreach
+}
+
+function showOnroadRoutes(request){
+	clearMap();
+	var onroad = [];
+	var startPoint = new ymaps.Placemark([request['dep_lat'], request['dep_lon']],
+	{
+		hintContent: '',
+		iconContent: '<img style="border-radius: 3px" src="'+ request['pic_url'] +'">',
+		
+	},{
+		iconLayout: 'default#imageWithContent',
+		iconImageHref: '../../assets/img/req_pin.png',
+		iconImageClipRect: [[0, 0], [50, 50]],
+		iconImageSize: [50, 50],
+		iconImageOffset: [-25, -50],
+		iconContentOffset: [21, 7],
+		iconContentSize: [27, 27],
+	});
+	var finishPoint = new ymaps.Placemark([request['des_lat'], request['des_lon']],
+	{
+		iconLayout: 'default#imageWithContent',
+		iconImageHref: "../../assets/img/fin_pin.png",
+		iconImageSize: [40, 40],
+		iconImageOffset: [-25, -40]
+	});
+	YMap.geoObjects.add(startPoint); YMap.geoObjects.add(finishPoint);
+	var multRoute = new ymaps.multiRouter.MultiRoute({
+		// Описание опорных точек мультимаршрута.
+		referencePoints: [
+			startPoint,
+			finishPoint
+		],
+		// Параметры маршрутизации.
+		params: {
+			// Ограничение на максимальное количество маршрутов, возвращаемое маршрутизатором.
+			results: 1
+		}
+	}, {
+		wayPointStart: startPlacemark,
+		// Внешний вид линии маршрута.
+		routeStrokeWidth: 2,
+		routeStrokeColor: "#008800",
+		routeActiveStrokeWidth: 6,
+		routeActiveStrokeColor: "#008800",
+		// Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
+		boundsAutoApply: true
+	});
+	YMap.geoObjects.add(multRoute);
+	multRoute.model.events.once("requestsuccess", function () {
+		var first_route_point = multRoute.getWayPoints().get(0);
+		var last_route_point = multRoute.getWayPoints().get(1);
+		//Hide first and last points from map
+		first_route_point.options.set('visible', false);
+		last_route_point.options.set('visible', false);
+	});
+	var startCircle = new ymaps.Circle([[request['dep_lat'], request['dep_lon']], 2100],{},{
+		visible: false
+	});
+	var finishCircle = new ymaps.Circle([[request['des_lat'], request['des_lon']], 2100],{},{
+		visible: false
+	});
+	map_points.forEach(function(item, i, arr){
+		YMap.geoObjects.add(startCircle); YMap.geoObjects.add(finishCircle);
+		var rt = ymaps.route([[item['dep_lat'], item['dep_lon']], [item['des_lat'], item['des_lon']]]).then(
+			function (res) {
+				var pathsObjects = ymaps.geoQuery(res.getPaths()),
+				edges = [];
+				pathsObjects.each(function (path) {
+					var coordinates = path.geometry.getCoordinates();
+					for (var i = 1, l = coordinates.length; i < l; i++) {
+						edges.push({
+							type: 'LineString',
+							coordinates: [coordinates[i], coordinates[i - 1]]
+						});
+					}
+				});
+				var routeObjects = ymaps.geoQuery(edges)
+					.add(res.getWayPoints())
+					.add(res.getViaPoints())
+					.setOptions('visible', false)
+					.addToMap(YMap),
+					objectsInStartCircle = routeObjects.searchInside(startCircle),
+					objectsInFinishCircle = routeObjects.searchInside(finishCircle);
+				var indexOfStart, indexOfFinish;
+				objectsInStartCircle.search('geometry.type = "LineString"').each(function (s) {
+					indexOfStart = routeObjects.indexOf(s);
+					return false;
+				});
+				objectsInFinishCircle.search('geometry.type = "LineString"').each(function (s) {
+					indexOfFinish = routeObjects.indexOf(s);
+					return false;
+				});
+				if(indexOfStart !== undefined && indexOfFinish !== undefined){
+					if(indexOfStart < indexOfFinish){
+						onroad.push(item);
+					}
+				}
+				if(i + 1 == arr.length){
+					setTimeout(function(){showMapPoints(YMap, onroad); showList(onroad);}, 200);
+				}
+			} //function(res) end
+		); //route end
+	}); //end foreach
 }

@@ -130,6 +130,7 @@ $regular = $route['regular'];
 <!-- Fill the array of map points -->
 <script>
 	var route_coords = {
+		'point_type': 1,
 		'point_id': <?php echo $route['route_id'];?>,
 		'dep_lat': <?php echo $route['dep_lat'];?>,
 		'dep_lon': <?php echo $route['dep_lon'];?>,
