@@ -15,7 +15,7 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 					'client_id' => '4871758',
 					'client_secret' => '2pMyltGbp4gdczcKt36f',
 					'code' => $_GET['code'],
-					'redirect_uri' => 'http://localhost/Poputka/login'
+					'redirect_uri' => 'http://localhost/Poputka/login'//'http://7c478d51.ngrok.com/Poputka/login'
 				);
 
 				$token = json_decode(file_get_contents('https://oauth.vk.com/access_token' . '?' . urldecode(http_build_query($params))), true);
@@ -34,7 +34,7 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 				}
 
 			}
-			redirect("");
+			redirect('');//"http://7c478d51.ngrok.com/Poputka/"
 		}
 		public function show_requests(){
 			if(isset($_SESSION['user_id'])/* && $_SESSION['driver']==1*/){

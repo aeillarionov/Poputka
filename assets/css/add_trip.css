@@ -70,7 +70,7 @@ nav:after{
 .list_container{
 	overflow-x: hidden; 
 	overflow-y : scroll;
-	height: 487px; 
+	height: 410px; 
 }
 .list_container hr{
 	margin: 8px 0 8px 0 !important;
@@ -232,4 +232,26 @@ h5 .finish{
 }
 .placemark_row .balloonDeleteButton{
 	color: red;
+}
+@keyframes pulse{
+	from{background-color:#43AC6A;}
+	to{background-color:#00CC66;}
+}
+@-webkit-keyframes pulse{
+	from{background-color:#43AC6A;}
+	to{background-color:#33CC00;}
+}
+.pulse {
+	margin-top: 5px;
+	background-color:#43AC6A;
+	animation-name: pulse;
+	animation-duration: 0.8s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: linear;
+	-webkit-animation-name: pulse;
+    -webkit-animation-duration: 0.8s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: alternate;
+    -webkit-animation-timing-function: linear;
 }

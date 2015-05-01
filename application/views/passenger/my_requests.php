@@ -6,12 +6,19 @@
 <dl class="sub-nav">
 	<!--dt>Фильтр:</dt-->
 	<dd onclick="show_all_routes_list()"><a href="#">Все</a></dd>
+	<dd onclick="showNearestRoutes()"><a href="#">Рядом</a></dd>
 	<dd class="active" onclick="showMyRequests()"><a href="#">По пути</a></dd>
-	<dd onclick="showNearestRoutes()"><a href="#">Ближайшие</a></dd>
+	<dd onclick=""><a href="#">Фильтр</a></dd>
 </dl>
-<div class="list_container" id="requests_list">
+<h5><i class="fa fa-street-view"></i>&nbsp;&nbsp;Мои маршруты:</h5>
+<div class="list_container" id="requests_list" style="height:410px;">
 <?php
+if(count($requests) == 0){
+	echo '<p>Вы пока не добавили ни одного маршрута</p>';
+}
 foreach($requests as $request):
+$now = getdate();
+$days_str = '';
 $from_time_arr = getdate($request['from_time']);
 $mins = $from_time_arr['minutes']<10 ? '0'.$from_time_arr['minutes'] : $from_time_arr['minutes'];
 $time_str = $from_time_arr['hours'].':'.$mins.' - ';
@@ -20,7 +27,14 @@ $mins = $to_time_arr['minutes'] < 10 ? '0'.$to_time_arr['minutes'] : $to_time_ar
 $time_str .= $to_time_arr['hours'].':'.$mins;
 $regular = $request['regular'];
       if($regular == 0){
-      	$days_str = 'Сегодня';
+      	if($from_time_arr['mday'] == $now['mday'] && $from_time_arr['mon'] == $now['mon'] && $from_time_arr['year'] == $now['year']){
+      		$days_str = 'Сегодня';
+      	} else {
+      		$days_str .= '<i class="fa fa-calendar"></i> ';
+      		$days_str .= $from_time_arr['mday']<10 ? '0'.$from_time_arr['mday'] : $from_time_arr['mday'];
+      		$days_str .= '/';
+      		$days_str .= $from_time_arr['mon']<10 ? '0'.$from_time_arr['mon'] : $from_time_arr['mon'];
+      	}
       } else {
       	$regul_arr = explode(',', $regular);
       	$days_str = 'Регулярно |';
@@ -84,14 +98,17 @@ $regular = $request['regular'];
 		'dep_lon': <?php echo $request['dep_lon'];?>,
 		'des_lat': <?php echo $request['des_lat'];?>,
 		'des_lon': <?php echo $request['des_lon'];?>,
+		'des_addr': <?php echo '"'.$request['des_addr'].'"';?>,
 		'pic_url': <?php echo '"'.$request['pic_url'].'"';?>
 	};
 	map_points.push(request_coords);
 </script>
 <?php endforeach;?>
 </div>
+<a class="button pulse" onclick="$('#list_view').toggleClass('active'); $('#add_trip').toggleClass('active'); clearMap();" href="#">+ Добавить свой маршрут</a>
 <script>
 	clearMap();
+	adjustMap();
 	showMapPoints(YMap, map_points);
 </script>
 <script src="../../assets/js/vendor/jquery.js"></script>

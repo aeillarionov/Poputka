@@ -75,11 +75,14 @@ class Passenger extends CI_Controller {
 			);
 			$status = $this->mdl_request->add_request($geo_data, $request_data);
 			if($status){
+				$data['requests'] = $this->mdl_request->showMyRequests();
 				$data['mode'] = 1;
 				$arg['title'] = 'Подвези меня | Попутчики';
 				$this->load->view('templates/header', $arg);
 				$this->load->view('templates/topbar_passenger');
-				$this->load->view('passenger/pick_me', $data);
+				$this->load->view('templates/pass_contain_top');
+				$this->load->view('passenger/my_requests', $data);
+				$this->load->view('templates/pass_contain_bot');
 				$this->load->view('templates/footer');
 			}
 		}

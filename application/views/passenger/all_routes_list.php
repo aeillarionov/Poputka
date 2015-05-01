@@ -5,13 +5,16 @@
 <dl class="sub-nav">
 	<!--dt>Фильтр:</dt-->
 	<dd class="active" onclick="show_all_routes_list()"><a href="#">Все</a></dd>
+	<dd onclick="showNearestRoutes()"><a href="#">Рядом</a></dd>
 	<dd onclick="showMyRequests()"><a href="#">По пути</a></dd>
-	<dd onclick="showNearestRoutes()"><a href="#">Ближайшие</a></dd>
+	<dd onclick=""><a href="#">Фильтр</a></dd>
 </dl>
-
+<h5><i class="fa fa-car"></i>&nbsp; Водители: </h5>
 <div class="list_container" id="routes_list">
 <?php
 foreach($routes as $route):
+$now = getdate();
+$days_str = '';
 $from_time_arr = getdate($route['from_time']);
 $mins = $from_time_arr['minutes']<10 ? '0'.$from_time_arr['minutes'] : $from_time_arr['minutes'];
 $time_str = $from_time_arr['hours'].':'.$mins.' - ';
@@ -20,7 +23,14 @@ $mins = $to_time_arr['minutes'] < 10 ? '0'.$to_time_arr['minutes'] : $to_time_ar
 $time_str .= $to_time_arr['hours'].':'.$mins;
 $regular = $route['regular'];
       if($regular == 0){
-      	$days_str = 'Сегодня';
+      	if($from_time_arr['mday'] == $now['mday'] && $from_time_arr['mon'] == $now['mon'] && $from_time_arr['year'] == $now['year']){
+      		$days_str = 'Сегодня';
+      	} else {
+      		$days_str .= '<i class="fa fa-calendar"></i> ';
+      		$days_str .= $from_time_arr['mday']<10 ? '0'.$from_time_arr['mday'] : $from_time_arr['mday'];
+      		$days_str .= '/';
+      		$days_str .= $from_time_arr['mon']<10 ? '0'.$from_time_arr['mon'] : $from_time_arr['mon'];
+      	}
       } else {
       	$regul_arr = explode(',', $regular);
       	$days_str = 'Регулярно |';
@@ -83,6 +93,7 @@ $regular = $route['regular'];
 		'dep_lon': <?php echo $route['dep_lon'];?>,
 		'des_lat': <?php echo $route['des_lat'];?>,
 		'des_lon': <?php echo $route['des_lon'];?>,
+		'des_addr': <?php echo '"'.$route['des_addr'].'"';?>,
 		'pic_url': <?php echo '"'.$route['pic_url'].'"';?>
 	};
 	map_points.push(route_coords);
@@ -112,6 +123,8 @@ $regular = $route['regular'];
 
 <script>
 	clearMap();
+	adjustMap();
 	showMapPoints(YMap, map_points);
 </script>
-                      </div>
+</div>
+<a class="button pulse" onclick="$('#list_view').toggleClass('active'); $('#add_trip').toggleClass('active'); clearMap();" href="#">+ Добавить свой маршрут</a>

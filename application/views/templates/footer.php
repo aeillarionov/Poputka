@@ -97,6 +97,7 @@
             $(".weekdayChoice").show();
         } else {
             $(".weekdayChoice").hide();
+            $('#regularDays').val(0);
         }
     }); 
   </script>

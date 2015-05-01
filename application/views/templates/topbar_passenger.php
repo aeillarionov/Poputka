@@ -10,11 +10,11 @@
     <section class="top-bar-section">
       <ul class="right">
           <li class="divider"></li>
-            <li class="active has-dropdown"><a href="#"><i class="fa fa-user"></i> &nbsp; Я - пешеход   </a>
+            <!--<li class="active has-dropdown"><a href="#"><i class="fa fa-user"></i> &nbsp; Я - пешеход   </a>
               <ul class="dropdown">
                 <li class="active"><a  href="../driver/show_requests"><i class="fa fa-car"></i> &nbsp; Я - водитель  </a></li>
               </ul>
-            </li>
+            </li>--!>
           <li class="divider"></li>
           <li class="has-dropdown">
             <a href="#"><?php echo $_SESSION['name'].' '.$_SESSION['surename'];?></a>

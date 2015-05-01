@@ -4357,7 +4357,7 @@ blockquote p {
     .sub-nav li a {
       text-decoration: none;
       color: #999999;
-      padding: 0.1875rem 1rem; }
+      padding: 0.1875rem 0.4rem; }
       .sub-nav dt a:hover,
       .sub-nav dd a:hover,
       .sub-nav li a:hover {

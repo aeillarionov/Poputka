@@ -14,7 +14,7 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 					'client_id' => '4871758',
 					'client_secret' => '2pMyltGbp4gdczcKt36f',
 					'code' => $_GET['code'],
-					'redirect_uri' => 'http://localhost/Poputka'
+					'redirect_uri' => 'http://localhost/Poputka'//'http://7c478d51.ngrok.com/Poputka'
 				);
 
 				$token = json_decode(file_get_contents('https://oauth.vk.com/access_token' . '?' . urldecode(http_build_query($params))), true);
@@ -104,11 +104,14 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 				);
 				$status = $this->mdl_route->add_route($geo_data, $route_data);
 				if($status){
+					$data['routes'] = $this->mdl_route->showMyRoutes();
 					$data['mode'] = 1;
 					$arg['title'] = 'Водителям | Попутчики';
 					$this->load->view('templates/header', $arg);
 					$this->load->view('templates/topbar_driver');
-					$this->load->view('driver/show_requests', $data);
+					$this->load->view('templates/contain_top');
+					$this->load->view('driver/my_routes', $data);
+					$this->load->view('templates/contain_bot');
 					$this->load->view('templates/footer');
 				}
 			}

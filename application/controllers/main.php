@@ -12,7 +12,7 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 		public function index(){
 			$client_id = '4871758';
 			$client_secret = '2pMyltGbp4gdczcKt36f';
-			$redirect_uri = 'http://localhost/Poputka/login';
+			$redirect_uri = 'http://localhost/Poputka/login';//'http://7c478d51.ngrok.com/Poputka/login';
 			
 			$url = 'http://oauth.vk.com/authorize';
 			

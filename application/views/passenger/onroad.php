@@ -12,7 +12,7 @@
 
 <dl class="sub-nav">
 	<!--dt>Фильтр:</dt-->
-	<dd onclick="showMyRequests()"><a href="#">Назад</a></dd>
+	<dd onclick="showMyRequests()"><a href="#"><i class="fa fa-arrow-left"></i>&nbsp;Назад</a></dd>
 </dl>
 <div class="list_container" id="requests_list">
 <?php
@@ -40,5 +40,6 @@ foreach($routes as $route):
 <?php endforeach;?>
 </div>
 <script>
+	adjustMap();
 	showOnroadRoutes(request_points);
 </script>
